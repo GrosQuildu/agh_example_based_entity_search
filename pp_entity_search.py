@@ -9,13 +9,15 @@
 import bisect
 from collections import defaultdict
 from decimal import Decimal as D
+from functools import lru_cache
 import logging
 from os.path import isfile
+from random import shuffle
 from yaml import safe_load
 
 from rdflib import Graph, ConjunctiveGraph, URIRef, Literal, BNode, RDF, RDFS
 from rdflib.util import guess_format
-from rdflib.term import BNode
+from rdflib.term import BNode, Node
 from rdflib.plugins.stores.sparqlstore import SPARQLStore
 
 PREFIXES = '''PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -30,12 +32,28 @@ PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 '''
 
-LANGS = ['en', '']
+# data with triples
+# data_url = 'http://dbpedia.org/sparql'
+data_url = './dumped.nq'
 
-D_PREC = D('0.00000')
+DUMP_TRIPLES = False  # save all triples used in the script-run to a file
+LANGS = ['en', '']  # languages for text representation of tripples
+D_PREC = D('0.00000')  # precision of floats in logging
 
 L = logging.getLogger(__name__)
 logging.basicConfig(format='%(message)s')
+
+
+def dump_triple(triple):
+    if not DUMP_TRIPLES:
+        return
+    assert len(triple) == 3
+    if isinstance(triple[-1], BNode):
+        return
+    with open('./dumped.nq', 'a') as f:
+        f.write(' '.join(map(lambda x: x.n3().replace('\n','\\n').replace('"""','"'), triple)))
+        f.write(' <http://dbpedia.org/>')
+        f.write(' .\n')
 
 
 class PPGraph:
@@ -57,9 +75,15 @@ class PPGraph:
         """Lame but SPARQLStore returns different stuff than Graph"""
         if isinstance(self.store, SPARQLStore):
             for x, _ in self.store.triples(*args, **kwargs):
+                if isinstance(x[0], BNode) or isinstance(x[2], BNode):
+                    continue
+                dump_triple(x)
                 yield x
         else:
             for x in self.store.triples(*args, **kwargs):
+                if isinstance(x[0], BNode) or isinstance(x[2], BNode):
+                    continue
+                dump_triple(x)
                 yield x
 
     # copied from graph.py
@@ -95,10 +119,12 @@ class PPGraph:
     # copied end
 
     def label(self, entity):
+        the_label = None
+
         if self.__getattr__('preferredLabel') is not None:
-            return self.__getattr__('preferredLabel')(entity, lang=LANGS[0])
+            the_label = self.__getattr__('preferredLabel')(entity, lang=LANGS[0])
         elif self.__getattr__('label') is not None:
-            return self.__getattr__('label')(entity)
+            the_label = self.__getattr__('label')(entity)
         else:
             results = self.store.query(PREFIXES+
                     '''SELECT DISTINCT ?l
@@ -108,13 +134,18 @@ class PPGraph:
 
             for label in results:
                 if label[0].language in LANGS:
-                    return label[0].value
+                    the_label = label[0]
+                    break
+
+        if the_label:
+            dump_triple((entity, RDFS.label, the_label))
+            return the_label
 
 
 def test_ppgraph():
     store = SPARQLStore('http://dbpedia.org/sparql')
 
-    filename = './tmp.nq'
+    filename = './dumped.nq'
     local_graph = ConjunctiveGraph()
     local_graph.parse(filename, format=guess_format(filename))
 
@@ -149,8 +180,10 @@ def test_ppgraph():
 def load_data(data_url):
     if isfile(data_url):
         L.info('Loading from local file: "%s"', data_url)
+        data_format = guess_format(data_url)
+        L.debug('Data format: %s', data_format)
         store = ConjunctiveGraph()
-        store.parse(data_url, format=guess_format(data_url))
+        store.parse(data_url, format=data_format)
     else:
         L.info('Loading remote SPARQL endpoint')
         store = SPARQLStore(data_url)
@@ -172,7 +205,7 @@ def text_representation(graph, entity):
     Finally all URIs are expanded to text with /rdfs:label predicate.
 
     Args:
-        graph(Graph or ConjunctiveGraph)
+        graph(PPGraph)
         entity(URIRef)
 
     Returns:
@@ -254,11 +287,11 @@ def text_retrieval_model(relation, graph, entity):
 
     Args:
         relation(str)
-        graph(Graph or ConjunctiveGraph)
+        graph(PPGraph)
         entity(URIRef)
 
     Returns:
-        probability(float)
+        probability(Decimal)
     """
     L.debug('Computing text-based probability for %s', entity)
 
@@ -269,7 +302,7 @@ def text_retrieval_model(relation, graph, entity):
     # normalize query
     relation = normalize(relation).split()
 
-    # get text representations of the entity
+    # get text representations of the entity, theta_e
     representations = text_representation(graph, entity)
 
     # precompute number of terms
@@ -347,42 +380,161 @@ def text_retrieval_model(relation, graph, entity):
     return final_probability
 
 
-def rank_text_based(graph, relation, entities_to_rank):
+@lru_cache(1024)
+def triples_set_representation(graph, entity):
+    """
+    Create set representation of the entity. Set containts all
+    triples that have the entity as a subject (outlinks)
+    or an object (inlinks).
+
+    Args:
+        graph(PPGraph)
+        entity(URIRef)
+
+    Returns:
+        set(tuple(URIRef, URIRef, URIRef/Literal))
+    """
+    L.debug('Computing triples set representation of %s', entity)
+
+    # sanity checks
+    assert isinstance(graph, PPGraph), ['graph is not PPGraph', graph]
+    assert isinstance(entity, URIRef), ['entity is not URIRef', entity]
+
+    result = set()
+
+    # outlinks
+    for triple_predicate, triple_object in graph.predicate_objects(subject=entity):
+        result.add((entity, triple_predicate, triple_object))
+        # yield (entity, triple_predicate, triple_object)
+    outlinks = len(result)
+    L.debug('%s-> outlinks: %s', ' '*4, outlinks)
+
+    # inlinks
+    for triple_subject, triple_predicate in graph.subject_predicates(object=entity):
+        result.add((triple_subject, triple_predicate, entity))
+        # yield (triple_subject, triple_predicate, entity)
+    L.debug('%s-> inlinks: %s', ' '*4, len(result) - outlinks)
+
+    return list(result)  # list because we were yielding
+
+
+def examples_preparsing(graph, examples):
+    """
+    Most of the final probability depends only on examples
+    So we need to compute it only once
+    """
+    L.debug('Preparsing data for %d examples', len(examples))
+
+    # get set representations
+    examples_representations = []
+    for example in examples:
+        examples_representations.append(triples_set_representation(graph, example))
+
+    # n(tr, x) = 1 if tr in x else 0
+    # denominator of P(tr|theta_X) = denominator = sum(tr in all(x in X)) sum(x in X) n(tr, x)
+    denominator = D(0)
+    for example_representation in examples_representations:
+        for tr in example_representation:
+            for x in examples_representations:
+                if tr in x:
+                    denominator += 1
+    L.debug('Denominator: %s', denominator)
+
+    # P(e_l | theta_X) = sum(tr in X) P(e_l|tr) * P(tr|theta_X)
+    # P(tr|theta_X) = sum(x in X) n(tr, x) / dem
+    # we can precompute P(tr|theta_X)
+    P_examples = dict()
+    for example_representation in examples_representations:
+        for tr in example_representation:
+            nominator = D(0)
+            for x in examples_representations:
+                if tr in x:
+                    nominator += 1
+            P_examples[tr] = nominator / denominator
+            # if URIRef('http://dbpedia.org/property/type') in tr:
+            #     print(tr)
+
+    L.debug('-'*20)
+    return P_examples
+
+
+def example_retrieval_model(P_examples, graph, entity):
+    """
+    Rank entities (represented as set of triples) based on the similarity of sets.
+    
+    Args:
+        P_examples(dict(triple: Decimal))
+        graph(PPGraph)
+        entity(URIRef)
+
+    Returns:
+        probability(Decimal)
+    """
+    L.debug('Computing example-based probability for %s', entity)
+
+    # sanity checks
+    assert isinstance(graph, PPGraph), 'graph is not PPGraph'
+    assert isinstance(entity, URIRef), ['entity is not URIRef', entity]
+
+    # get set representations of the entity, e_l
+    representation = triples_set_representation(graph, entity)
+
+    # P(e_l | theta_X) = sum(tr in X) P(e_l|tr) * P(tr|theta_X)
+    # P(e_l|tr) = 1 if tr in e_l else 0
+    # P(tr|theta_X) are in P_examples
+    final_probability = D(0)
+    for tr in P_examples.keys():
+        if tr in representation:
+            final_probability += P_examples[tr]
+
+    L.debug('Probability: %s', final_probability)
+    return final_probability
+
+
+def rank(retrieval_model, input_data, graph, entities_to_rank):
     ranking = []
     for entity in entities_to_rank:
-        rank = text_retrieval_model(relation, graph, entity)
-        bisect.insort_right(ranking, (rank, entity))
+        ranking_score = retrieval_model(input_data, graph, entity)
+        bisect.insort_right(ranking, (ranking_score, entity))
         L.debug('-'*20)
-        break
+        # break
 
     # best scored first
     ranking = ranking[::-1] 
-
     return ranking
 
 
-def main():
-    data_url = 'http://dbpedia.org/sparql'
+def main(data_url):
     graph = load_data(data_url)
 
     with open('./pp_data/sample1.yml', 'r') as f:
         sample_data = safe_load(f)
 
     entities_to_rank = []
+    examples = []
     for relevant_URI in sample_data['relevant']:
         entities_to_rank.append(URIRef(relevant_URI))
-    for relevant_URI in sample_data['not_relevant']:
-        entities_to_rank.append(URIRef(relevant_URI))
+        examples.append(URIRef(relevant_URI))
 
-    ranking = rank_text_based(graph, sample_data['topic'], entities_to_rank)
+    for not_relevant_URI in sample_data['not_relevant']:
+        entities_to_rank.append(URIRef(not_relevant_URI))
+
+    # shuffle(examples)
+    examples = examples[:2]
+    P_examples = examples_preparsing(graph, examples)
+
+    # entities_to_rank = entities_to_rank[1:2]
+    # ranking = rank(text_retrieval_model, sample_data['topic'], graph, entities_to_rank)
+    ranking = rank(example_retrieval_model, P_examples, graph, entities_to_rank)
 
     L.info('-'*30)
     L.info('Ranking:')
-    for rank, entity in ranking:
-        L.info(f'{entity} - {rank}')
+    for ranking_score, entity in ranking:
+        L.info(f'{entity} - {ranking_score}')
 
 
 if __name__ == '__main__':
     L.setLevel('DEBUG')
     # test_ppgraph()
-    main()
+
+    main(data_url)
