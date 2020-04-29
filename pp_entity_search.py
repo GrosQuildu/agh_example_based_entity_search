@@ -7,6 +7,7 @@
 
 
 import bisect
+from collections import defaultdict
 from decimal import Decimal as D
 import logging
 from os.path import isfile
@@ -28,6 +29,8 @@ PREFIX dbpedia2: <http://dbpedia.org/property/>
 PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 '''
+
+LANGS = ['en', '']
 
 D_PREC = D('0.00000')
 
@@ -92,19 +95,21 @@ class PPGraph:
     # copied end
 
     def label(self, entity):
-        if self.__getattr__('label') is not None:
+        if self.__getattr__('preferredLabel') is not None:
+            return self.__getattr__('preferredLabel')(entity, lang=LANGS[0])
+        elif self.__getattr__('label') is not None:
             return self.__getattr__('label')(entity)
         else:
             results = self.store.query(PREFIXES+
                     '''SELECT DISTINCT ?l
                        WHERE {{ 
                           {} rdfs:label ?l .
-                       }} LIMIT 1'''.format(entity.n3()))
+                       }}'''.format(entity.n3()))
 
             for label in results:
-                return label[0].value
-            # for label in self.objects(entity, RDFS.label):
-            #     return label
+                if label[0].language in LANGS:
+                    return label[0].value
+
 
 def test_ppgraph():
     store = SPARQLStore('http://dbpedia.org/sparql')
@@ -143,11 +148,11 @@ def test_ppgraph():
 
 def load_data(data_url):
     if isfile(data_url):
-        print('Loading from local file: "{}"'.format(data_url))
+        L.info('Loading from local file: "%s"', data_url)
         store = ConjunctiveGraph()
         store.parse(data_url, format=guess_format(data_url))
     else:
-        print('Loading remote SPARQL endpoint')
+        L.info('Loading remote SPARQL endpoint')
         store = SPARQLStore(data_url)
     return PPGraph(store)
 
@@ -186,41 +191,42 @@ def text_representation(graph, entity):
                     URIRef('http://purl.org/dc/elements/1.1/subject'))
 
     # store triples in sets
-    attributes, types, links = set(), set(), set()
-    seen_predicates = set()
+    attributes, types, links = defaultdict(int), defaultdict(int), defaultdict(int)
     entities_without_label = 0
 
     # require only `threshold` objects of all type
-    threshold = 9999999999999
+    threshold = 999
 
     # iterate over all triples with the entity as the subject
     for triple_predicate, triple_object in graph.predicate_objects(entity):
-        if triple_predicate in seen_predicates:
-            continue
+        cs_to_use = None
+        value_to_use = None
 
         if isinstance(triple_object, Literal):
-            seen_predicates.add(triple_predicate)
-            if len(attributes) < threshold:
-                attributes.add(normalize(triple_object))
+            # use only english, should be more efficient method for that
+            if triple_object.language not in LANGS:
+                continue
+            cs_to_use = attributes
+            value_to_use = triple_object
 
         elif isinstance(triple_object, URIRef):
-            if triple_predicate in type_uris and len(types) >= threshold:
-                continue
-            elif len(links) >= threshold:
-                continue
-
-            triple_object_text = normalize(graph.label(triple_object))
-            if len(triple_object_text) == 0:
+            value_to_use = graph.label(triple_object)
+            if not value_to_use or len(value_to_use) == 0:
                 entities_without_label += 1
                 continue
 
             if triple_predicate in type_uris:
-                types.add(triple_object_text)
+                cs_to_use = types
             else:
-                seen_predicates.add(triple_predicate)
-                links.add(triple_object_text)
+                cs_to_use = links
 
-        if all([len(the_list) >= threshold for the_list in [attributes, types, links]]):
+        else:
+            continue
+
+        for o in normalize(value_to_use).split():
+            cs_to_use[o] += 1
+
+        if all([sum(cs.values()) >= threshold for cs in [attributes, types, links]]):
             break
 
     result = {
@@ -228,26 +234,11 @@ def text_representation(graph, entity):
         'types': types,
         'links': links
     }
-    L.debug('%d skipped, because of missing label', entities_without_label)
+    if entities_without_label > 0:
+        L.debug('%d skipped, because of missing label', entities_without_label)
     L.debug('Found: %s, %s, %s',
-                *[' '.join([str(len(cs)), cs_name]) for cs_name, cs in result.items()])
+                *[' '.join([str(sum(cs.values())), 'terms in', cs_name]) for cs_name, cs in result.items()])
     return result
-
-
-def text_retrieval_model_params(graph):
-    # Dirichlet smoothed model of the entire collection of triples
-    # D = node text representation
-    # theta_c = collection of nodes
-    # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
-    probability_collection_denominator = 0
-    for node in graph.all_nodes():
-        if isinstance(node, Literal):
-            triple_object_text = node
-        else:
-            triple_object_text = graph.label(node)
-        probability_collection_denominator += len(normalize(triple_object_text))
-
-    return probability_collection_denominator
 
 
 def text_retrieval_model(relation, graph, entity):
@@ -282,18 +273,27 @@ def text_retrieval_model(relation, graph, entity):
     representations = text_representation(graph, entity)
 
     # precompute number of terms
-    representations_lengths = {cs_name: sum(map(len, cs)) for
+    representations_lengths = {cs_name: sum(cs.values()) for
                                 cs_name, cs in representations.items()}
-    L.debug('Terms amount: %s, %s, %s',
-                *[' '.join([str(v), 'terms in', k]) for k,v in representations_lengths.items()])
-
-    # precompute model parameters
-    # probability_collection_denominator = text_retrieval_model_params(graph)
 
     # pseudo-counts or equivalent sample size
     ni = len(relation)
 
-    # P(t|theta_c), it should depend on term t
+    # denominator of "Dirichlet smoothed model of the entire collection of triples"
+    # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
+    # D = node text representation
+    # theta_c = collection of nodes
+    # we do not compute that, too time consuming
+    # 
+    # probability_collection_denominator = D(0)
+    # for node in graph.all_nodes():
+    #     if isinstance(node, Literal):
+    #         triple_object_text = node
+    #     else:
+    #         triple_object_text = graph.label(node)
+    #     probability_collection_denominator += len(normalize(triple_object_text))
+
+    # P(t|theta_c), it should depends on term t
     # but assume it is 1/ni, according to (4), page 182
     probability_collection = D(1) / D(ni)
 
@@ -314,32 +314,36 @@ def text_retrieval_model(relation, graph, entity):
         for cs_name, cs in representations.items():
             # tf(t,e) is the term frequency of t in the representation document of e
             # http://mlwiki.org/index.php/TF-IDF#Term_Frequency
-            tf = sum([one_label.count(t) for one_label in cs])
+            tf = cs[t]
 
+            # "Dirichlet smoothed model of the entire collection of triples"
             # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
-            # probability_collection_nominator = 0
+            # we do not compute that, too time consuming
+            # 
+            # probability_collection_nominator = D(0)
             # for node in graph.all_nodes():
             #     if isinstance(node, Literal):
             #         triple_object_text = node
             #     else:
             #         triple_object_text = graph.label(node)
             #     probability_collection_nominator += normalize(triple_object_text).count(t)
-            # probability_collection = float(probability_collection_nominator) / probability_collection_denominator
+            # probability_collection = probability_collection_nominator / probability_collection_denominator
 
             # P(t | theta_cs_e) == [tf(t,e) + ni*P(t|theta_c)] / [|e| + ni]
             representation_probability = D(tf + ni*probability_collection) 
             representation_probability /= representations_lengths[cs_name] + ni
-            L.debug('%s-> probability for %s: %s', ' '*8, cs_name, representation_probability.quantize(D_PREC))
-            print(tf)
+            L.debug('%s-> probability for %s: %s (tf=%d, |e|=%d)', ' '*8,
+                        cs_name, representation_probability.quantize(D_PREC), tf, representations_lengths[cs_name])
+
             # do the addition
             term_probability += representation_probability * representation_weights[cs_name]
 
         L.debug('%s-> term probability: %s', ' '*8, term_probability.quantize(D_PREC))
 
-        # do the multiplication as div because precision
+        # do the multiplication
         final_probability *= term_probability
 
-    L.debug('Probability: %s', final_probability.quantize(D_PREC))
+    L.debug('Probability: %s', final_probability)
     return final_probability
 
 
@@ -348,7 +352,8 @@ def rank_text_based(graph, relation, entities_to_rank):
     for entity in entities_to_rank:
         rank = text_retrieval_model(relation, graph, entity)
         bisect.insort_right(ranking, (rank, entity))
-        L.debug(f'Rank for %s: %f', entity, rank)
+        L.debug('-'*20)
+        break
 
     # best scored first
     ranking = ranking[::-1] 
@@ -365,6 +370,8 @@ def main():
 
     entities_to_rank = []
     for relevant_URI in sample_data['relevant']:
+        entities_to_rank.append(URIRef(relevant_URI))
+    for relevant_URI in sample_data['not_relevant']:
         entities_to_rank.append(URIRef(relevant_URI))
 
     ranking = rank_text_based(graph, sample_data['topic'], entities_to_rank)
