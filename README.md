@@ -17,7 +17,7 @@
 
 This tool solves a problem of searching relevant entities in [Linked Open Data](https://lod-cloud.net) (structured) graphs.
 
-Problem statement: given relation (plain text query like "astronauts who walked on the Moon") and set of examples (like [<<http://dbpedia.org/resource/Neil_Armstrong>>](http://dbpedia.org/resource/Neil_Armstrong) and [<<http://dbpedia.org/resource/Alan_Bean>>](http://dbpedia.org/resource/Alan_Bean) find another, matching examples.
+Problem statement: given relation (plain text query like "astronauts who walked on the Moon") and set of examples (like [\[\[<<http://dbpedia.org/resource/Neil_Armstrong\>](http://dbpedia.org/resource/Neil_Armstrong) and [<<http://dbpedia.org/resource/Alan_Bean\>](http://dbpedia.org/resource/Alan_Bean) find another, matching examples.
 
 Problem solution is described in the paper, but the main point is to rank entities based on the probability of being relevant to either relation (text-based approach) or examples (structured/example-based approach). Also combination of this approaches was proposed.
 
