@@ -161,9 +161,9 @@ def text_retrieval_model(relation, graph, entity):
 
     # this are experimental
     representation_weights = {
-        'attributes': D('0.33'),
-        'types': D('0.33'),
-        'links': D('0.33')
+        'attributes': D('0.4'),
+        'types': D('0.4'),
+        'links': D('0.2')
     }
 
     # P(R | theta_e) == product(t in R) P(t | theta_w_e)
