@@ -12,7 +12,7 @@ from rdflib import RDF, RDFS, BNode, ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.plugins.stores.sparqlstore import SPARQLStore
 from rdflib.util import guess_format
 
-from config import (LANGS, PREFIXES, SPARQL_ENDPOINT,  # type: ignore
+from example_based_entity_search.config import (LANGS, PREFIXES, SPARQL_ENDPOINT,  # type: ignore
                     TRIPLE_FILE_EXTENSIONS, L)
 
 

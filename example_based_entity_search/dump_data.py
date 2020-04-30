@@ -12,8 +12,8 @@ from typing import List
 from rdflib import RDFS, BNode, URIRef
 from yaml import YAMLError, safe_load
 
-from config import SPARQL_ENDPOINT, L  # type: ignore
-from utils import load_data  # type: ignore
+from example_based_entity_search.config import SPARQL_ENDPOINT, L  # type: ignore
+from example_based_entity_search.utils import load_data  # type: ignore
 
 
 def n3_format(node):
@@ -90,9 +90,7 @@ def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[U
                 f.write(' .\n')
 
 
-if __name__ == '__main__':
-    L.setLevel('INFO')
-
+def main():
     # cmd line args
     parser = argparse.ArgumentParser(description='Capture data from \
         remote SPARQL endpoint and save it to local file in nqads format')
@@ -115,6 +113,7 @@ if __name__ == '__main__':
     # args parsing and sanity checks
     args = parser.parse_args()
 
+    L.setLevel('INFO')
     if args.verbose:
         L.setLevel('DEBUG')
 
@@ -143,3 +142,7 @@ if __name__ == '__main__':
     # do the job
     entities: List[URIRef] = list(map(URIRef, sample_data[args.sample_key]))
     get_and_store_data(args.sparql_endpoint, args.filename, entities)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,5 +1,6 @@
 ---
 topic: astronauts who walked on the Moon
+examples: 4  # use this number of top relevant entities as examples
 relevant:
     - http://dbpedia.org/resource/Neil_Armstrong
     - http://dbpedia.org/resource/Alan_Bean

@@ -17,8 +17,8 @@ from random import shuffle
 from rdflib import RDF, Literal, URIRef
 from yaml import YAMLError, safe_load
 
-from config import D_PREC, EXAMPLES_AMOUNT, URI_PREFIX, L  # type: ignore
-from utils import PPGraph, load_data  # type: ignore
+from example_based_entity_search.config import D_PREC, EXAMPLES_AMOUNT, URI_PREFIX, L  # type: ignore
+from example_based_entity_search.utils import PPGraph, load_data  # type: ignore
 
 
 def normalize(text):
@@ -471,14 +471,21 @@ def rank_from_sample_file(graph, sample_file):
         return
 
     examples_amount = EXAMPLES_AMOUNT
-    if len(relevant) <= EXAMPLES_AMOUNT:
-        examples_amount = min(1, len(relevant) // 2)
+    random_examples = True
+    if 'examples' in sample_data:
+        try:
+            examples_amount = int(sample_data['examples'])
+            random_examples = False
+        except Exception as e:
+            L.error('Error reading amount of examples from YAML file: %s', e)
+    if len(relevant) <= examples_amount:
         L.warning(
             'There is only %d relevant entities in sample data, trimming amount of examples', len(relevant))
 
     # select random examples from relevant entities
     examples = relevant[:]
-    shuffle(examples)
+    if random_examples:
+        shuffle(examples)
     examples = examples[:examples_amount]
     for example in examples:
         entities_to_rank.remove(example)
@@ -515,6 +522,7 @@ def main():
     # args parsing and sanity checks
     args = parser.parse_args()
 
+    L.setLevel('INFO')
     if args.verbose:
         L.setLevel('DEBUG')
 
@@ -535,5 +543,4 @@ def main():
 
 
 if __name__ == '__main__':
-    L.setLevel('INFO')
     main()

@@ -18,8 +18,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'ebes-data = dump_data:main',
-            'ebes-rank = pp_entity_search:main'
+            'ebes-data = example_based_entity_search.dump_data:main',
+            'ebes-rank = example_based_entity_search.pp_entity_search:main'
         ]
     }
 )

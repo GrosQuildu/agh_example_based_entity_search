@@ -130,14 +130,18 @@ Triples graph can be parsed from a file in any format supported by rdflib (RDF/X
 Query should be stored in a [YAML](https://yaml.org/) file with the following format:
 ```yaml
 ---
-topic: astronauts who walked on the Moon
-relevant:
+topic: astronauts who walked on the Moon  # plain text relation
+examples: 4  # use this number of top relevant entities as examples
+relevant:  # examples and entities known to be relevant
     - http://dbpedia.org/resource/Neil_Armstrong
     - http://dbpedia.org/resource/Alan_Bean
-not_relevant:
+not_relevant:  # entities known to be not relevant
     - http://dbpedia.org/resource/Samuel_Beckett
 ...
 ```
+
+For "real" queries number of `relevant` entities would be equal to `examples` and `not_relevant`
+entities would be a list of all examples we want to rank.
 
 Not that the graph used should containt triples related with entities from the query.
 
