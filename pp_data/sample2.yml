@@ -1,0 +1,25 @@
+---
+topic: nations where Portuguese is an official language
+relevant:
+    - http://dbpedia.org/resource/Brazil
+    - http://dbpedia.org/resource/Angola
+    - http://dbpedia.org/resource/Mozambique
+    - http://dbpedia.org/resource/Portugal
+    - http://dbpedia.org/resource/Guinea-Bissau
+    - http://dbpedia.org/resource/East_Timor
+    - http://dbpedia.org/resource/Equatorial_Guinea
+    - http://dbpedia.org/resource/Macau
+    - http://dbpedia.org/resource/Cape_Verde
+    - http://dbpedia.org/resource/São_Tomé_and_Príncipe
+not_relevant:
+    - http://dbpedia.org/resource/Democratic_Republic_of_Afghanistan
+    - http://dbpedia.org/resource/Moldavia
+    - http://dbpedia.org/resource/Macedonia_(ancient_kingdom)
+    - http://dbpedia.org/resource/County_of_Boulogne
+    - http://dbpedia.org/resource/Republic_of_New_Granada
+    - http://dbpedia.org/resource/Syria
+    - http://dbpedia.org/resource/Poland
+    - http://dbpedia.org/resource/Åland_Islands
+    - http://dbpedia.org/resource/Kingdom_of_Brazil
+    - http://dbpedia.org/resource/England
+...

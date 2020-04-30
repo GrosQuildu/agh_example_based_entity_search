@@ -1,0 +1,25 @@
+---
+topic: members of the Fellowship of the Ring
+relevant:
+    - http://dbpedia.org/resource/Aragorn
+    - http://dbpedia.org/resource/Samwise_Gamgee
+    - http://dbpedia.org/resource/Merry_Brandybuck
+    - http://dbpedia.org/resource/Pippin_Took
+    - http://dbpedia.org/resource/Gimli_(Middle-earth)
+    - http://dbpedia.org/resource/Boromir
+    - http://dbpedia.org/resource/Gandalf
+    - http://dbpedia.org/resource/Frodo_Baggins
+    - http://dbpedia.org/resource/Legolas
+not_relevant:
+    - http://dbpedia.org/resource/Sauron
+    - http://dbpedia.org/resource/Manwë
+    - http://dbpedia.org/resource/Saruman
+    - http://dbpedia.org/resource/Isildur
+    - http://dbpedia.org/resource/Bilbo_Baggins
+    - http://dbpedia.org/resource/Elrond
+    - http://dbpedia.org/resource/Balin_(Middle-earth)
+    - http://dbpedia.org/resource/Peter_Pan
+    - http://dbpedia.org/resource/King_Arthur
+    - http://dbpedia.org/resource/Jason
+    - http://dbpedia.org/resource/Leir_of_Britain
+...

@@ -6,223 +6,19 @@
 '''
 
 
+import argparse
 import bisect
 from collections import defaultdict
 from decimal import Decimal as D
 from functools import lru_cache
-import logging
-from os.path import isfile
+from os.path import isdir, isfile
 from random import shuffle
-from yaml import safe_load
 
-from rdflib import Graph, ConjunctiveGraph, URIRef, Literal, BNode, RDF, RDFS
-from rdflib.util import guess_format
-from rdflib.term import BNode, Node
-from rdflib.plugins.stores.sparqlstore import SPARQLStore
+from rdflib import RDF, Literal, URIRef
+from yaml import YAMLError, safe_load
 
-PREFIXES = '''PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX : <http://dbpedia.org/resource/>
-PREFIX dbpedia2: <http://dbpedia.org/property/>
-PREFIX dbpedia: <http://dbpedia.org/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-'''
-
-
-SPARQL_ENDPOINT = 'http://dbpedia.org/sparql'
-LANGS = ['en', 'pl', None, '']  # languages for text representation of tripples
-D_PREC = D('0.00000')  # precision of floats in logging
-
-L = logging.getLogger(__name__)
-logging.basicConfig(format='%(message)s')
-
-
-class PPGraph:
-    """
-    Wrapper for rdflib.Graph
-    To unify SPARQLStore and Graph objects
-    """
-    def __init__(self, store):
-        supported_backends = [SPARQLStore, Graph, ConjunctiveGraph]
-        assert any([isinstance(store, backend) for backend in supported_backends])
-        self.store = store
-        self._size = None  # lazy binding
-
-    def __getattr__(self, name):
-        attr = getattr(self.store, name, None)
-        if attr is not None:
-            return attr
-
-    def triples(self, *args, **kwargs):
-        """Lame but SPARQLStore returns different stuff than Graph"""
-        def check_triple(tr):
-            if isinstance(tr[0], BNode) or isinstance(tr[2], BNode):
-                return False
-            if isinstance(tr[2], Literal) and tr[2].language not in LANGS:
-                return False
-            return True
-
-        if isinstance(self.store, SPARQLStore):
-            for tr, _ in self.store.triples(*args, **kwargs):
-                if not check_triple(tr):
-                    continue
-                yield tr
-        else:
-            for tr in self.store.triples(*args, **kwargs):
-                if not check_triple(tr):
-                    continue
-                yield tr
-
-    # copied from graph.py
-    def subjects(self, predicate=None, object=None):
-        """A generator of subjects with the given predicate and object"""
-        for s, p, o in self.triples((None, predicate, object)):
-            yield s
-
-    def predicates(self, subject=None, object=None):
-        """A generator of predicates with the given subject and object"""
-        for s, p, o in self.triples((subject, None, object)):
-            yield p
-
-    def objects(self, subject=None, predicate=None):
-        """A generator of objects with the given subject and predicate"""
-        for s, p, o in self.triples((subject, predicate, None)):
-            yield o
-
-    def subject_predicates(self, object=None):
-        """A generator of (subject, predicate) tuples for the given object"""
-        for s, p, o in self.triples((None, None, object)):
-            yield s, p
-
-    def subject_objects(self, predicate=None):
-        """A generator of (subject, object) tuples for the given predicate"""
-        for s, p, o in self.triples((None, predicate, None)):
-            yield s, o
-
-    def predicate_objects(self, subject=None):
-        """A generator of (predicate, object) tuples for the given subject"""
-        for s, p, o in self.triples((subject, None, None)):
-            yield p, o
-    # copied end
-
-    def label(self, entity):
-        if self.__getattr__('preferredLabel') is not None:
-            for the_lang in LANGS:
-                label = self.__getattr__('preferredLabel')(entity, lang=the_lang)
-                if label:
-                    return label
-
-        elif self.__getattr__('label') is not None:
-            return self.__getattr__('label')(entity)
-
-        else:
-            for label in self.objects(entity, RDFS.label):
-                if label.language in LANGS:
-                    return label
-
-    @property
-    def size(self):
-        if self._size:
-            return self._size
-
-        results = self.store.query(PREFIXES+ 
-                    '''SELECT (count(?s) as ?X) 
-                       WHERE {  
-                          ?s ?p ?o . 
-                       }''')
-        self._size = list(results)[0][0].value
-        return self._size
-
-
-def test_ppgraph():
-    store = SPARQLStore('http://dbpedia.org/sparql')
-
-    filename = './dumped.nq'
-    local_graph = ConjunctiveGraph()
-    local_graph.parse(filename, format=guess_format(filename))
-
-    to_test = [store, local_graph]
-
-    for backend in to_test:
-        graph = PPGraph(backend)
-
-        # can query
-        results = graph.query(PREFIXES+
-                '''SELECT DISTINCT ?s 
-                   WHERE { 
-                      ?s rdf:type foaf:Person
-                   } LIMIT 10''')
-        assert len(results) == 10
-
-        # triples
-        t_subject = URIRef('http://dbpedia.org/resource/John_Markoff')
-        t_predicate = RDF.type
-        t_object = URIRef('http://dbpedia.org/class/yago/LivingThing100004258')
-        for s, p, o in graph.triples((t_subject, t_predicate, t_object)):
-            assert s == t_subject
-            assert p == t_predicate
-            assert o == t_object
-
-        # subject/predicate/object helpers
-        for p, o in graph.predicate_objects((t_subject)):
-            assert isinstance(p, URIRef) or isinstance(p, Literal) or isinstance(p, BNode)
-            assert isinstance(o, URIRef) or isinstance(o, Literal) or isinstance(o, BNode)
-
-
-def load_data(data_url):
-    if isfile(data_url):
-        L.info('Loading from local file: "%s"', data_url)
-        data_format = guess_format(data_url)
-        L.debug('Data format: %s', data_format)
-        store = ConjunctiveGraph()
-        store.parse(data_url, format=data_format)
-    else:
-        L.info('Loading remote SPARQL endpoint')
-        store = SPARQLStore(data_url)
-    return PPGraph(store)
-
-
-def get_and_store_data(sparql_endpoint, out_filename, entities):
-    """
-    For every entity get triples like:
-        entity -> w/e -> Literal
-        entity -> w/e -> URI
-        URI -> label -> Literal
-        w/e -> w/e -> entity
-    """
-    entities_amount = len(entities)
-    L.info('Getting data from remote endpoint "%s" for %d entities', sparql_endpoint, entities_amount)
-
-    graph = load_data(sparql_endpoint)
-    result = []
-    for i, entity in enumerate(entities):
-        L.debug('%d / %d', i, entities_amount)
-        for triple_predicate, triple_object in graph.predicate_objects(subject=entity):
-            if isinstance(triple_object, BNode):
-                continue
-
-            tr = (entity, triple_predicate, triple_object)
-            result.append(tr)
-            if isinstance(triple_object, URIRef):
-                label = graph.label(triple_object)
-                if label:
-                    result.append((triple_object, RDFS.label, label))
-
-        for triple_subject, triple_predicate in graph.subject_predicates(object=entity):
-            if isinstance(triple_subject, BNode):
-                continue
-            result.append((triple_subject, triple_predicate, entity))
-
-    L.info('Saving %d triples', len(result))
-    for tr in result:
-        with open(out_filename, 'a') as f:
-            f.write(' '.join(map(lambda x: x.n3().replace('\n','\\n').replace('"""','"'), tr)))
-            f.write(' <http://dbpedia.org/>')
-            f.write(' .\n')
+from config import D_PREC, EXAMPLES_AMOUNT, URI_PREFIX, L  # type: ignore
+from utils import PPGraph, load_data  # type: ignore
 
 
 def normalize(text):
@@ -256,10 +52,11 @@ def text_representation(graph, entity):
 
     # use this URIs for types
     type_uris = (RDF.type, URIRef('http://www.w3.org/2004/02/skos/core#subject'),
-                    URIRef('http://purl.org/dc/elements/1.1/subject'))
+                 URIRef('http://purl.org/dc/elements/1.1/subject'))
 
     # store triples in sets
-    attributes, types, links = defaultdict(int), defaultdict(int), defaultdict(int)
+    attributes, types, links = defaultdict(
+        int), defaultdict(int), defaultdict(int)
     entities_without_label = 0
 
     # require only `threshold` objects of all type
@@ -302,7 +99,7 @@ def text_representation(graph, entity):
     if entities_without_label > 0:
         L.debug('%d skipped, because of missing label', entities_without_label)
     L.debug('Found: %s, %s, %s',
-                *[' '.join([str(sum(cs.values())), 'terms in', cs_name]) for cs_name, cs in result.items()])
+            *[' '.join([str(sum(cs.values())), 'terms in', cs_name]) for cs_name, cs in result.items()])
     return result
 
 
@@ -310,7 +107,7 @@ def text_retrieval_model(relation, graph, entity):
     """
     Rank entities (represented as text) based on the probability of
     being relevant to the relation. Based on a language modeling approach.
-    
+
     Dirichlet model computation is based on:
         http://mlwiki.org/index.php/Smoothing_for_Language_Models#Dirichlet_Prior_Smoothing
         https://www.coursera.org/lecture/text-retrieval/lesson-4-6-smoothing-methods-part-1-kM6Ie
@@ -339,7 +136,7 @@ def text_retrieval_model(relation, graph, entity):
 
     # precompute number of terms
     representations_lengths = {cs_name: sum(cs.values()) for
-                                cs_name, cs in representations.items()}
+                               cs_name, cs in representations.items()}
 
     # pseudo-counts or equivalent sample size
     ni = graph.size
@@ -349,7 +146,7 @@ def text_retrieval_model(relation, graph, entity):
     # D = node text representation
     # theta_c = collection of nodes
     # we do not compute that, too time consuming
-    # 
+    #
     # probability_collection_denominator = D(0)
     # for node in graph.all_nodes():
     #     if isinstance(node, Literal):
@@ -362,7 +159,7 @@ def text_retrieval_model(relation, graph, entity):
     # but assume it is 1/ni, according to (4), page 182
     probability_collection = D(1) / D(ni)
 
-    # this are experimental 
+    # this are experimental
     representation_weights = {
         'attributes': D('0.33'),
         'types': D('0.33'),
@@ -384,7 +181,7 @@ def text_retrieval_model(relation, graph, entity):
             # "Dirichlet smoothed model of the entire collection of triples"
             # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
             # we do not compute that, too time consuming
-            # 
+            #
             # probability_collection_nominator = D(0)
             # for node in graph.all_nodes():
             #     if isinstance(node, Literal):
@@ -395,15 +192,17 @@ def text_retrieval_model(relation, graph, entity):
             # probability_collection = probability_collection_nominator / probability_collection_denominator
 
             # P(t | theta_cs_e) == [tf(t,e) + ni*P(t|theta_c)] / [|e| + ni]
-            representation_probability = D(tf + ni*probability_collection) 
+            representation_probability = D(tf + ni*probability_collection)
             representation_probability /= representations_lengths[cs_name] + ni
             L.debug('%s-> probability for %s: %s (tf=%d, |e|=%d)', ' '*8,
-                        cs_name, representation_probability.quantize(D_PREC), tf, representations_lengths[cs_name])
+                    cs_name, representation_probability.quantize(D_PREC), tf, representations_lengths[cs_name])
 
             # do the addition
-            term_probability += representation_probability * representation_weights[cs_name]
+            term_probability += representation_probability * \
+                representation_weights[cs_name]
 
-        L.debug('%s-> term probability: %s', ' '*8, term_probability.quantize(D_PREC))
+        L.debug('%s-> term probability: %s', ' '*8,
+                term_probability.quantize(D_PREC))
 
         # do the multiplication
         final_probability *= term_probability
@@ -458,7 +257,8 @@ def examples_preparsing(graph, examples):
     # get set representations
     examples_representations = []
     for example in examples:
-        examples_representations.append(triples_set_representation(graph, example))
+        examples_representations.append(
+            triples_set_representation(graph, example))
 
     # n(tr, x) = 1 if tr in x else 0
     # denominator of P(tr|theta_X) = denominator = sum(tr in all(x in X)) sum(x in X) n(tr, x)
@@ -489,7 +289,7 @@ def examples_preparsing(graph, examples):
 def example_retrieval_model(P_examples, graph, entity):
     """
     Rank entities (represented as set of triples) based on the similarity of sets.
-    
+
     Args:
         P_examples(dict(triple: Decimal))
         graph(PPGraph)
@@ -520,54 +320,211 @@ def example_retrieval_model(P_examples, graph, entity):
 
 
 def rank(retrieval_model, input_data, graph, entities_to_rank):
+    entities_to_rank_amount = len(entities_to_rank)
+    entities_to_rank_progress = max(1, entities_to_rank_amount//10)
+    L.info('Ranking %d entities', entities_to_rank_amount)
+
     ranking = []
-    for entity in entities_to_rank:
+    for i, entity in enumerate(entities_to_rank):
+        if i % entities_to_rank_progress == 0:
+            L.info(' ~> ranking entity no %d / %d', i, entities_to_rank_amount)
         ranking_score = retrieval_model(input_data, graph, entity)
         bisect.insort_right(ranking, (ranking_score, entity))
         L.debug('-'*20)
         # break
 
     # best scored first
-    ranking = ranking[::-1] 
+    ranking = ranking[::-1]
     return ranking
 
 
-def main():
-    with open('./pp_data/sample1.yml', 'r') as f:
-        sample_data = safe_load(f)
+def print_ranking(name, ranking, relevant=None):
+    print('-'*30)
+    print(f'Ranking - {name}:')
+    for ranking_score, entity in ranking:
+        if relevant:
+            if entity in relevant:
+                print(f' OK {entity} - {ranking_score}')
+            else:
+                print(f' NO {entity} - {ranking_score}')
+        else:
+            print(f' {entity} - {ranking_score}')
+
+
+def shell(graph):
+    L.info('-~'*30)
+    L.info('Starting interactive shell')
+
+    def print_help():
+        print('h/help - print this help')
+        print('l/load - load more triples from local files')
+        print('q/query - make query')
+        print('e/exit - exit shell')
+
+    def do_load(graph: PPGraph) -> PPGraph:
+        triples_path = input('Path to triples file: ')
+        if not isfile(triples_path) and not isdir(triples_path):
+            L.error('`%s` - no such file or directory', triples_path)
+            return
+
+        try:
+            graph = load_data(triples_path, graph)
+        except Exception as e:
+            L.error('Error when loading data from `%s`: %s', triples_path, e)
+
+        return graph
+
+    def parse_entity_from_string(graph: PPGraph, entity_string: str) -> URIRef:
+        if entity_string.startswith('<'):
+            entity_string = entity_string[1:-1]
+            L.warning('Entity starts with `<`, trimming to `%s`', entity_string)
+        if not entity_string.startswith('http'):
+            entity_string = URI_PREFIX + entity_string
+            L.warning('Entity not an URI, prepending `%s`', URI_PREFIX)
+        return URIRef(entity_string)
+
+    def do_query(graph: PPGraph) -> None:
+        relation = input('Relation (R), as plain text: ')
+
+        print('Examples (X), as URIs. Enter (blank line) to finish:')
+        examples = []
+        while True:
+            example = input('   > ').strip()
+            if len(example) == 0:
+                break
+            examples.append(parse_entity_from_string(graph, example))
+
+        print('Entities to rank, as URIs. Enter (blank line) to finish:')
+        entities_to_rank = []
+        while True:
+            entity = input('   > ').strip()
+            if len(entity) == 0:
+                break
+            entities_to_rank.append(parse_entity_from_string(graph, entity))
+
+        # prepare examples for efficiency
+        P_examples = examples_preparsing(graph, examples)
+
+        # make the ranking
+        ranking_text = rank(text_retrieval_model,
+                            relation, graph, entities_to_rank)
+
+        ranking_example = rank(example_retrieval_model,
+                               P_examples, graph, entities_to_rank)
+
+        print_ranking('text-based', ranking_text)
+        print_ranking('example-based', ranking_example)
+
+    print_help()
+    while True:
+        choice = input('> ').lower()
+        if choice in ['h', 'help']:
+            print_help()
+        elif choice in ['l', 'load']:
+            graph = do_load(graph)
+        elif choice in ['q', ' query']:
+            do_query(graph)
+        elif choice in ['e', 'exit']:
+            break
+        else:
+            print('Wrong input')
+            print_help()
+
+
+def rank_from_sample_file(graph, sample_file):
+    L.info('Preparing ranking for sample file')
+
+    if not isfile(sample_file):
+        L.error('File `%s` do not exists, aborting!', sample_file)
+        return
+
+    try:
+        with open(sample_file, 'r') as f:
+            sample_data = safe_load(f)
+    except YAMLError as e:
+        L.error('Error loading sample file `%s`: %s', sample_file, e)
+        return
+
+    if not isinstance(sample_data, dict):
+        L.error('Sampel data must be dictionary!')
+        return
+
+    for required_key in ['topic', 'relevant', 'not_relevant']:
+        if required_key not in sample_data.keys():
+            L.error('`%s` key not found in sample data', required_key)
+            return
 
     # convert strings to URIRefs and prepare data
     relevant = list(map(URIRef, sample_data['relevant']))
     not_relevant = list(map(URIRef, sample_data['not_relevant']))
     entities_to_rank = relevant[:] + not_relevant[:]
 
-    # triple graph
-    out_filename = './dumped.nq'
-    # get_and_store_data(SPARQL_ENDPOINT, out_filename, entities_to_rank)
-    graph = load_data(out_filename)
+    if len(relevant) == 0:
+        L.error('No relevant entities specified in the sample data')
+        return
 
-    # prepare examples from relevand entities
+    if len(relevant) <= EXAMPLES_AMOUNT:
+        L.warning(
+            'There is only %d relevant entities in sample data, all will be used as input examples', len(relevant))
+
+    # select random examples from relevant entities
     examples = relevant[:]
     shuffle(examples)
-    examples = examples[:4]
+    examples = examples[:EXAMPLES_AMOUNT]
     for example in examples:
         entities_to_rank.remove(example)
+
+    # prepare examples for efficiency
     P_examples = examples_preparsing(graph, examples)
 
-    # ranking = rank(text_retrieval_model, sample_data['topic'], graph, entities_to_rank)
-    ranking = rank(example_retrieval_model, P_examples, graph, entities_to_rank)
+    # make the ranking
+    ranking_text = rank(text_retrieval_model,
+                        sample_data['topic'], graph, entities_to_rank)
 
-    L.info('-'*30)
-    L.info('Ranking:')
-    for ranking_score, entity in ranking:
-        if entity in relevant: 
-            L.info(f' OK {entity} - {ranking_score}')
-        else:
-            L.info(f' NO {entity} - {ranking_score}')
+    ranking_example = rank(example_retrieval_model,
+                           P_examples, graph, entities_to_rank)
+
+    print_ranking('text-based', ranking_text, relevant)
+    print_ranking('example-based', ranking_example, relevant)
+
+
+def main():
+    # cmd line args
+    parser = argparse.ArgumentParser(description='Rank entities')
+    parser.add_argument(
+        'triples_data',
+        help='Path to directory with triple files or path to triple file or SPARQL endpoint url')
+    parser.add_argument(
+        '-s', '--sample_file',
+        help='YAML file with keys: `topic`, `relevant` and `not_relevant`')
+    parser.add_argument(
+        '--shell', action='store_true',
+        help='Run interactive shell')
+    parser.add_argument("-v", "--verbose", help="debug output",
+                        action="store_true")
+
+    # args parsing and sanity checks
+    args = parser.parse_args()
+
+    if args.verbose:
+        L.setLevel('DEBUG')
+
+    # triples graph
+    try:
+        graph = load_data(args.triples_data)
+    except Exception as e:
+        L.error('Error when loading data from `%s`: %s', args.triples_data, e)
+        exit(1)
+
+    # execute query from sample file
+    if args.sample_file:
+        rank_from_sample_file(graph, args.sample_file)
+
+    # execute queries from shell
+    if args.shell:
+        shell(graph)
 
 
 if __name__ == '__main__':
-    L.setLevel('DEBUG')
-    # test_ppgraph()
-
+    L.setLevel('INFO')
     main()

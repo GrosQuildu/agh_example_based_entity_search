@@ -1,0 +1,19 @@
+---
+topic: the four of the companions of the prophet
+relevant:
+    - http://dbpedia.org/resource/Abu_Dhar_al-Ghifari
+    - http://dbpedia.org/resource/Ammar_ibn_Yasir
+    - http://dbpedia.org/resource/Miqdad_ibn_Aswad
+    - http://dbpedia.org/resource/Salman_the_Persian
+not_relevant:
+    - http://dbpedia.org/resource/Ali
+    - http://dbpedia.org/resource/Fadl_ibn_Abbas
+    - http://dbpedia.org/resource/Hind_bint_Utbah
+    - http://dbpedia.org/resource/Julaybib
+    - http://dbpedia.org/resource/Muhammad_ibn_Maslamah
+    - http://dbpedia.org/resource/Saint_Peter
+    - http://dbpedia.org/resource/Andrew_the_Apostle
+    - http://dbpedia.org/resource/Jude_the_Apostle
+    - http://dbpedia.org/resource/Judas_Iscariot
+    - http://dbpedia.org/resource/H._P._Lovecraft
+...

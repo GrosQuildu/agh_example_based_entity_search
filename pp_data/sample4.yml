@@ -1,0 +1,23 @@
+---
+topic: ten ancient Greek city
+relevant:
+    - http://dbpedia.org/resource/Abydos
+    - http://dbpedia.org/resource/Aenus
+    - http://dbpedia.org/resource/Akrai
+    - http://dbpedia.org/resource/Amida
+    - http://dbpedia.org/resource/Apamea
+    - http://dbpedia.org/resource/Pagasae
+    - http://dbpedia.org/resource/Paros
+    - http://dbpedia.org/resource/Ephesus
+    - http://dbpedia.org/resource/Elateia
+    - http://dbpedia.org/resource/Gangra
+not_relevant:
+    - http://dbpedia.org/resource/Heraklion
+    - http://dbpedia.org/resource/Kalamaria
+    - http://dbpedia.org/resource/Volos
+    - http://dbpedia.org/resource/Trikala
+    - http://dbpedia.org/resource/Kraków
+    - http://dbpedia.org/resource/Paris
+    - http://dbpedia.org/resource/Rome
+    - http://dbpedia.org/resource/Moscow
+...
