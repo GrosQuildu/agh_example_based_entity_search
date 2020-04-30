@@ -84,6 +84,86 @@ Ranking - example-based:
  OK http://dbpedia.org/resource/John_Young - 0
 ```
 
+## Running the tool
+
+Use `setup.py` or run with the Docker:
+```sh
+git clone https://github.com/GrosQuildu/example_based_entity_search
+cd example_based_entity_search
+docker build -t example_based_entity_search .
+docker run -it -v `pwd`/pp_data:/home/user/data example_based_entity_search
+```
+
+This will mount `./pp_data` directory in the container (as `data`) and spawn interactive shell.
+
+At the beginning, dbpedia.org endpoint is loaded. Now lets hand-craft some query:
+```sh
+> query
+Relation (R), as plain text: most powerful sith lords
+Number of examples (integer): 2
+Examples (X), as URIs.
+   > http://dbpedia.org/resource/Palpatine
+   > http://dbpedia.org/resource/Darth_Bane
+Entities to rank, as URIs. Enter (blank line) to finish:
+   > http://dbpedia.org/resource/Darth_Vader
+   > http://dbpedia.org/resource/Darth_Maul
+   > http://dbpedia.org/resource/Revan
+   > http://dbpedia.org/resource/Sauron
+   > http://dbpedia.org/resource/Yoda
+   > http://dbpedia.org/resource/Qui-Gon_Jinn
+   > http://dbpedia.org/resource/Mace_Windu
+   > http://dbpedia.org/resource/Obi-Wan_Kenobi
+   > http://dbpedia.org/resource/James_Bond
+   > http://dbpedia.org/resource/G._K._Chesterton
+   > 
+Ranking 10 entities
+ ~> ranking entity no 0 / 10
+...
+------------------------------
+Ranking - text-based:
+ http://dbpedia.org/resource/Darth_Vader - 1.405558168120405905088125607E-16
+ http://dbpedia.org/resource/Revan - 1.398970640143771268550264186E-16
+ http://dbpedia.org/resource/Darth_Maul - 1.324117820519982851698630489E-16
+ http://dbpedia.org/resource/Mace_Windu - 8.523851958480738507552716070E-17
+ http://dbpedia.org/resource/James_Bond - 4.851968887117295073021727182E-17
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 4.633994123207575686367693457E-17
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 4.177985724050877073177547586E-17
+ http://dbpedia.org/resource/Yoda - 3.461588235149503761620056721E-17
+ http://dbpedia.org/resource/Sauron - 2.903879954877150388445926839E-17
+ http://dbpedia.org/resource/G._K._Chesterton - 2.873440129133987334846882730E-17
+------------------------------
+Ranking - example-based:
+ http://dbpedia.org/resource/Darth_Vader - 0.3197353914002205071664829098
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.2149944873208379272326350602
+ http://dbpedia.org/resource/Yoda - 0.1797133406835722160970231530
+ http://dbpedia.org/resource/Mace_Windu - 0.1543550165380374862183020947
+ http://dbpedia.org/resource/Darth_Maul - 0.1543550165380374862183020947
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 0.1356119073869900771775082689
+ http://dbpedia.org/resource/Revan - 0.08489525909592061742006615223
+ http://dbpedia.org/resource/Sauron - 0.04410143329658213891951488434
+ http://dbpedia.org/resource/G._K._Chesterton - 0.03528114663726571113561190740
+ http://dbpedia.org/resource/James_Bond - 0.03087100330760749724366041903
+```
+
+To change triples graph, run `load` command:
+```sh
+> load
+Path to triples file or SPARQL endpoint url: data/sample1.nq
+Loading triples from file `data/sample1.nq`
+Switching PPGraph backend from remote endpoint to local files
+```
+
+Now execute query from sample file:
+```sh
+> sample
+Sample file to use: data/sample1.yml
+Preparing ranking for sample file `data/sample1.yml`
+Ranking 20 entities
+ ~> ranking entity no 0 / 20
+...
+```
+
+
 ## Data
 #### Original
 The base blob of structured data used in the paper was BTC-2009:

@@ -12,8 +12,9 @@ from rdflib import RDF, RDFS, BNode, ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.plugins.stores.sparqlstore import SPARQLStore
 from rdflib.util import guess_format
 
-from example_based_entity_search.config import (LANGS, PREFIXES, SPARQL_ENDPOINT,  # type: ignore
-                    TRIPLE_FILE_EXTENSIONS, L)
+from example_based_entity_search.config import LANGS  # type: ignore
+from example_based_entity_search.config import (PREFIXES, SPARQL_ENDPOINT,
+                                                TRIPLE_FILE_EXTENSIONS, L)
 
 
 class PPGraph:
@@ -105,13 +106,17 @@ class PPGraph:
 
     def parse(self, *args, **kwargs):
         if isinstance(self.store, SPARQLStore):
-            raise Exception(
-                "Can't parse more data with this PPGraph, because it uses remote SPRAQL endpoint")
+            L.warning(
+                'Switching PPGraph backend from remote endpoint to local files')
+            self.store = ConjunctiveGraph()
         self._size = None  # will need to recompute that
         return self.store.parse(*args, **kwargs)
 
     @property
     def size(self):
+        if isinstance(self.store, SPARQLStore):
+            return 13370  # just something big
+
         if self._size:
             return self._size
 
@@ -148,16 +153,18 @@ def load_data(data_url: str, old_graph: PPGraph = None) -> PPGraph:
                 graph.parse(triples_file, format=data_format)
 
     else:
-        L.info('Loading triples from remote SPARQL endpoint `%s`', data_url)
-        if old_graph:
-            raise Exception("Can't load remote endpoint to old PPGraph")
+        L.info('Using remote graph from SPARQL endpoint `%s`', data_url)
         graph = PPGraph(SPARQLStore(data_url))
 
         # early fail
-        graph.query('''SELECT DISTINCT ?s 
+        try:
+            graph.query('''SELECT DISTINCT ?s 
                    WHERE { 
                       ?s rdf:type foaf:Person
                    } LIMIT 1''')
+        except Exception as e:
+            L.error("Can't load data from remote endpoint")
+            raise e
 
     return graph
 
@@ -193,7 +200,7 @@ def test_ppgraph(data_urls: List[str]):
 
 if __name__ == '__main__':
     L.setLevel('DEBUG')
-    L.info('Running %s tests', __file__)
+    L.info('Running utils.py tests')
 
     # remote
     data_urls = [SPARQL_ENDPOINT]

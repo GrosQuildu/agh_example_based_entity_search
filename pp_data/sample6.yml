@@ -1,0 +1,18 @@
+---
+topic: most powerful sith lords
+examples: 2
+relevant:
+    - http://dbpedia.org/resource/Palpatine
+    - http://dbpedia.org/resource/Darth_Bane
+    - http://dbpedia.org/resource/Darth_Vader
+    - http://dbpedia.org/resource/Darth_Maul
+    - http://dbpedia.org/resource/Revan
+not_relevant:
+    - http://dbpedia.org/resource/Sauron
+    - http://dbpedia.org/resource/Yoda
+    - http://dbpedia.org/resource/Qui-Gon_Jinn
+    - http://dbpedia.org/resource/Mace_Windu
+    - http://dbpedia.org/resource/Obi-Wan_Kenobi
+    - http://dbpedia.org/resource/James_Bond
+    - http://dbpedia.org/resource/G._K._Chesterton
+...

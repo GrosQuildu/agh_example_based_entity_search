@@ -28,4 +28,4 @@ D_PREC = D('0.00000')  # precision of floats in logging
 EXAMPLES_AMOUNT = 4  # how many relevant entities use as the examples
 
 logging.basicConfig(format='%(message)s')
-L = logging.getLogger()
+L = logging.getLogger('ebes')

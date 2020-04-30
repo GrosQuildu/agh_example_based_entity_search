@@ -12,7 +12,8 @@ from typing import List
 from rdflib import RDFS, BNode, URIRef
 from yaml import YAMLError, safe_load
 
-from example_based_entity_search.config import SPARQL_ENDPOINT, L  # type: ignore
+from example_based_entity_search.config import (  # type: ignore
+    SPARQL_ENDPOINT, L)
 from example_based_entity_search.utils import load_data  # type: ignore
 
 
@@ -125,7 +126,7 @@ def main():
         exit(1)
 
     try:
-        with open(args.sample_file, 'r') as f:
+        with open(args.sample_file, 'r', encoding='utf8') as f:
             sample_data = safe_load(f)
     except YAMLError as e:
         L.error('Error loading sample file `%s`: %s', args.sample_file, e)

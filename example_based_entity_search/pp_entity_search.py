@@ -17,8 +17,10 @@ from random import shuffle
 from rdflib import RDF, Literal, URIRef
 from yaml import YAMLError, safe_load
 
-from example_based_entity_search.config import D_PREC, EXAMPLES_AMOUNT, URI_PREFIX, L  # type: ignore
-from example_based_entity_search.utils import PPGraph, load_data  # type: ignore
+from example_based_entity_search.config import D_PREC  # type: ignore
+from example_based_entity_search.config import EXAMPLES_AMOUNT, URI_PREFIX, L
+from example_based_entity_search.utils import PPGraph  # type: ignore
+from example_based_entity_search.utils import load_data
 
 
 def normalize(text):
@@ -363,10 +365,7 @@ def shell(graph):
         print('e/exit - exit shell')
 
     def do_load(graph: PPGraph) -> PPGraph:
-        triples_path = input('Path to triples file: ')
-        if not isfile(triples_path) and not isdir(triples_path):
-            L.error('`%s` - no such file or directory', triples_path)
-            return
+        triples_path = input('Path to triples file or SPARQL endpoint url: ')
 
         try:
             graph = load_data(triples_path, graph)
@@ -387,12 +386,20 @@ def shell(graph):
     def do_query(graph: PPGraph) -> None:
         relation = input('Relation (R), as plain text: ')
 
-        print('Examples (X), as URIs. Enter (blank line) to finish:')
+        examples_amount = None
+        while not examples_amount:
+            try:
+                examples_amount = int(input('Number of examples (integer): '))
+            except:
+                L.error('Bad integer! Try harder.')
+
+        print('Examples (X), as URIs.')
         examples = []
-        while True:
-            example = input('   > ').strip()
-            if len(example) == 0:
-                break
+        for _ in range(examples_amount):
+            while True:
+                example = input('   > ').strip()
+                if len(example) > 0:
+                    break
             examples.append(parse_entity_from_string(graph, example))
 
         print('Entities to rank, as URIs. Enter (blank line) to finish:')
@@ -427,9 +434,9 @@ def shell(graph):
             print_help()
         elif choice in ['l', 'load']:
             graph = do_load(graph)
-        elif choice in ['q', ' query']:
+        elif choice in ['q', 'query']:
             do_query(graph)
-        elif choice in ['s', ' s']:
+        elif choice in ['s', 'sample']:
             do_sample(graph)
         elif choice in ['e', 'exit']:
             break
@@ -439,16 +446,16 @@ def shell(graph):
 
 
 def rank_from_sample_file(graph, sample_file):
-    L.info('Preparing ranking for sample file')
+    L.info('Preparing ranking for sample file `%s`', sample_file)
 
     if not isfile(sample_file):
         L.error('File `%s` do not exists, aborting!', sample_file)
         return
 
     try:
-        with open(sample_file, 'r') as f:
+        with open(sample_file, 'r', encoding='utf8') as f:
             sample_data = safe_load(f)
-    except YAMLError as e:
+    except (UnicodeDecodeError, YAMLError) as e:
         L.error('Error loading sample file `%s`: %s', sample_file, e)
         return
 
