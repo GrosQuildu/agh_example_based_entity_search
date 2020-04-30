@@ -359,6 +359,7 @@ def shell(graph):
         print('h/help - print this help')
         print('l/load - load more triples from local files')
         print('q/query - make query')
+        print('s/sample - make query from sample file')
         print('e/exit - exit shell')
 
     def do_load(graph: PPGraph) -> PPGraph:
@@ -415,6 +416,10 @@ def shell(graph):
         print_ranking('text-based', ranking_text)
         print_ranking('example-based', ranking_example)
 
+    def do_sample(graph):
+        sample_file = input('Sample file to use: ')
+        rank_from_sample_file(graph, sample_file)
+
     print_help()
     while True:
         choice = input('> ').lower()
@@ -424,6 +429,8 @@ def shell(graph):
             graph = do_load(graph)
         elif choice in ['q', ' query']:
             do_query(graph)
+        elif choice in ['s', ' s']:
+            do_sample(graph)
         elif choice in ['e', 'exit']:
             break
         else:
@@ -463,14 +470,16 @@ def rank_from_sample_file(graph, sample_file):
         L.error('No relevant entities specified in the sample data')
         return
 
+    examples_amount = EXAMPLES_AMOUNT
     if len(relevant) <= EXAMPLES_AMOUNT:
+        examples_amount = min(1, len(relevant) // 2)
         L.warning(
-            'There is only %d relevant entities in sample data, all will be used as input examples', len(relevant))
+            'There is only %d relevant entities in sample data, trimming amount of examples', len(relevant))
 
     # select random examples from relevant entities
     examples = relevant[:]
     shuffle(examples)
-    examples = examples[:EXAMPLES_AMOUNT]
+    examples = examples[:examples_amount]
     for example in examples:
         entities_to_rank.remove(example)
 
