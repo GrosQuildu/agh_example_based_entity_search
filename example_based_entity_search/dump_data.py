@@ -50,7 +50,7 @@ def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[U
 
     # get triples for every entity in the list
     for i, entity in enumerate(entities):
-        L.debug('%d / %d', i, entities_amount)
+        L.info('%d / %d', i, entities_amount)
         result = []
 
         # entity -> w/e -> w/e
@@ -65,9 +65,12 @@ def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[U
 
             # URI -> label -> Literal
             if isinstance(triple_object, URIRef):
-                label = graph.label(triple_object)
-                if label:
-                    result.append((triple_object, RDFS.label, label))
+                try:
+                    label = graph.label(triple_object)
+                    if label:
+                        result.append((triple_object, RDFS.label, label))
+                except:
+                    pass
 
         # w/e -> w/e -> entity
         for triple_subject, triple_predicate in graph.subject_predicates(

@@ -154,7 +154,10 @@ def load_data(data_url: str, old_graph: PPGraph = None) -> PPGraph:
         graph = PPGraph(SPARQLStore(data_url))
 
         # early fail
-        graph.size
+        graph.query('''SELECT DISTINCT ?s 
+                   WHERE { 
+                      ?s rdf:type foaf:Person
+                   } LIMIT 1''')
 
     return graph
 
