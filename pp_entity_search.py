@@ -32,28 +32,13 @@ PREFIX dbpedia: <http://dbpedia.org/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 '''
 
-# data with triples
-# data_url = 'http://dbpedia.org/sparql'
-data_url = './dumped.nq'
 
-DUMP_TRIPLES = False  # save all triples used in the script-run to a file
-LANGS = ['en', '']  # languages for text representation of tripples
+SPARQL_ENDPOINT = 'http://dbpedia.org/sparql'
+LANGS = ['en', 'pl', None, '']  # languages for text representation of tripples
 D_PREC = D('0.00000')  # precision of floats in logging
 
 L = logging.getLogger(__name__)
 logging.basicConfig(format='%(message)s')
-
-
-def dump_triple(triple):
-    if not DUMP_TRIPLES:
-        return
-    assert len(triple) == 3
-    if isinstance(triple[-1], BNode):
-        return
-    with open('./dumped.nq', 'a') as f:
-        f.write(' '.join(map(lambda x: x.n3().replace('\n','\\n').replace('"""','"'), triple)))
-        f.write(' <http://dbpedia.org/>')
-        f.write(' .\n')
 
 
 class PPGraph:
@@ -65,6 +50,7 @@ class PPGraph:
         supported_backends = [SPARQLStore, Graph, ConjunctiveGraph]
         assert any([isinstance(store, backend) for backend in supported_backends])
         self.store = store
+        self._size = None  # lazy binding
 
     def __getattr__(self, name):
         attr = getattr(self.store, name, None)
@@ -73,18 +59,23 @@ class PPGraph:
 
     def triples(self, *args, **kwargs):
         """Lame but SPARQLStore returns different stuff than Graph"""
+        def check_triple(tr):
+            if isinstance(tr[0], BNode) or isinstance(tr[2], BNode):
+                return False
+            if isinstance(tr[2], Literal) and tr[2].language not in LANGS:
+                return False
+            return True
+
         if isinstance(self.store, SPARQLStore):
-            for x, _ in self.store.triples(*args, **kwargs):
-                if isinstance(x[0], BNode) or isinstance(x[2], BNode):
+            for tr, _ in self.store.triples(*args, **kwargs):
+                if not check_triple(tr):
                     continue
-                dump_triple(x)
-                yield x
+                yield tr
         else:
-            for x in self.store.triples(*args, **kwargs):
-                if isinstance(x[0], BNode) or isinstance(x[2], BNode):
+            for tr in self.store.triples(*args, **kwargs):
+                if not check_triple(tr):
                     continue
-                dump_triple(x)
-                yield x
+                yield tr
 
     # copied from graph.py
     def subjects(self, predicate=None, object=None):
@@ -119,27 +110,32 @@ class PPGraph:
     # copied end
 
     def label(self, entity):
-        the_label = None
-
         if self.__getattr__('preferredLabel') is not None:
-            the_label = self.__getattr__('preferredLabel')(entity, lang=LANGS[0])
+            for the_lang in LANGS:
+                label = self.__getattr__('preferredLabel')(entity, lang=the_lang)
+                if label:
+                    return label
+
         elif self.__getattr__('label') is not None:
-            the_label = self.__getattr__('label')(entity)
+            return self.__getattr__('label')(entity)
+
         else:
-            results = self.store.query(PREFIXES+
-                    '''SELECT DISTINCT ?l
-                       WHERE {{ 
-                          {} rdfs:label ?l .
-                       }}'''.format(entity.n3()))
+            for label in self.objects(entity, RDFS.label):
+                if label.language in LANGS:
+                    return label
 
-            for label in results:
-                if label[0].language in LANGS:
-                    the_label = label[0]
-                    break
+    @property
+    def size(self):
+        if self._size:
+            return self._size
 
-        if the_label:
-            dump_triple((entity, RDFS.label, the_label))
-            return the_label
+        results = self.store.query(PREFIXES+ 
+                    '''SELECT (count(?s) as ?X) 
+                       WHERE {  
+                          ?s ?p ?o . 
+                       }''')
+        self._size = list(results)[0][0].value
+        return self._size
 
 
 def test_ppgraph():
@@ -190,6 +186,45 @@ def load_data(data_url):
     return PPGraph(store)
 
 
+def get_and_store_data(sparql_endpoint, out_filename, entities):
+    """
+    For every entity get triples like:
+        entity -> w/e -> Literal
+        entity -> w/e -> URI
+        URI -> label -> Literal
+        w/e -> w/e -> entity
+    """
+    entities_amount = len(entities)
+    L.info('Getting data from remote endpoint "%s" for %d entities', sparql_endpoint, entities_amount)
+
+    graph = load_data(sparql_endpoint)
+    result = []
+    for i, entity in enumerate(entities):
+        L.debug('%d / %d', i, entities_amount)
+        for triple_predicate, triple_object in graph.predicate_objects(subject=entity):
+            if isinstance(triple_object, BNode):
+                continue
+
+            tr = (entity, triple_predicate, triple_object)
+            result.append(tr)
+            if isinstance(triple_object, URIRef):
+                label = graph.label(triple_object)
+                if label:
+                    result.append((triple_object, RDFS.label, label))
+
+        for triple_subject, triple_predicate in graph.subject_predicates(object=entity):
+            if isinstance(triple_subject, BNode):
+                continue
+            result.append((triple_subject, triple_predicate, entity))
+
+    L.info('Saving %d triples', len(result))
+    for tr in result:
+        with open(out_filename, 'a') as f:
+            f.write(' '.join(map(lambda x: x.n3().replace('\n','\\n').replace('"""','"'), tr)))
+            f.write(' <http://dbpedia.org/>')
+            f.write(' .\n')
+
+
 def normalize(text):
     return str(text).lower()
 
@@ -236,9 +271,6 @@ def text_representation(graph, entity):
         value_to_use = None
 
         if isinstance(triple_object, Literal):
-            # use only english, should be more efficient method for that
-            if triple_object.language not in LANGS:
-                continue
             cs_to_use = attributes
             value_to_use = triple_object
 
@@ -310,7 +342,7 @@ def text_retrieval_model(relation, graph, entity):
                                 cs_name, cs in representations.items()}
 
     # pseudo-counts or equivalent sample size
-    ni = len(relation)
+    ni = graph.size
 
     # denominator of "Dirichlet smoothed model of the entire collection of triples"
     # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
@@ -404,18 +436,16 @@ def triples_set_representation(graph, entity):
 
     # outlinks
     for triple_predicate, triple_object in graph.predicate_objects(subject=entity):
-        result.add((entity, triple_predicate, triple_object))
-        # yield (entity, triple_predicate, triple_object)
+        result.add((triple_predicate, triple_object))
     outlinks = len(result)
     L.debug('%s-> outlinks: %s', ' '*4, outlinks)
 
     # inlinks
     for triple_subject, triple_predicate in graph.subject_predicates(object=entity):
-        result.add((triple_subject, triple_predicate, entity))
-        # yield (triple_subject, triple_predicate, entity)
+        result.add((triple_predicate, triple_subject))
     L.debug('%s-> inlinks: %s', ' '*4, len(result) - outlinks)
 
-    return list(result)  # list because we were yielding
+    return result
 
 
 def examples_preparsing(graph, examples):
@@ -451,8 +481,6 @@ def examples_preparsing(graph, examples):
                 if tr in x:
                     nominator += 1
             P_examples[tr] = nominator / denominator
-            # if URIRef('http://dbpedia.org/property/type') in tr:
-            #     print(tr)
 
     L.debug('-'*20)
     return P_examples
@@ -504,37 +532,42 @@ def rank(retrieval_model, input_data, graph, entities_to_rank):
     return ranking
 
 
-def main(data_url):
-    graph = load_data(data_url)
-
+def main():
     with open('./pp_data/sample1.yml', 'r') as f:
         sample_data = safe_load(f)
 
-    entities_to_rank = []
-    examples = []
-    for relevant_URI in sample_data['relevant']:
-        entities_to_rank.append(URIRef(relevant_URI))
-        examples.append(URIRef(relevant_URI))
+    # convert strings to URIRefs and prepare data
+    relevant = list(map(URIRef, sample_data['relevant']))
+    not_relevant = list(map(URIRef, sample_data['not_relevant']))
+    entities_to_rank = relevant[:] + not_relevant[:]
 
-    for not_relevant_URI in sample_data['not_relevant']:
-        entities_to_rank.append(URIRef(not_relevant_URI))
+    # triple graph
+    out_filename = './dumped.nq'
+    # get_and_store_data(SPARQL_ENDPOINT, out_filename, entities_to_rank)
+    graph = load_data(out_filename)
 
-    # shuffle(examples)
-    examples = examples[:2]
+    # prepare examples from relevand entities
+    examples = relevant[:]
+    shuffle(examples)
+    examples = examples[:4]
+    for example in examples:
+        entities_to_rank.remove(example)
     P_examples = examples_preparsing(graph, examples)
 
-    # entities_to_rank = entities_to_rank[1:2]
     # ranking = rank(text_retrieval_model, sample_data['topic'], graph, entities_to_rank)
     ranking = rank(example_retrieval_model, P_examples, graph, entities_to_rank)
 
     L.info('-'*30)
     L.info('Ranking:')
     for ranking_score, entity in ranking:
-        L.info(f'{entity} - {ranking_score}')
+        if entity in relevant: 
+            L.info(f' OK {entity} - {ranking_score}')
+        else:
+            L.info(f' NO {entity} - {ranking_score}')
 
 
 if __name__ == '__main__':
     L.setLevel('DEBUG')
     # test_ppgraph()
 
-    main(data_url)
+    main()
