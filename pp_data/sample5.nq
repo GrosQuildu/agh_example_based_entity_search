@@ -12298,3 +12298,376 @@
 <http://dbpedia.org/resource/Orson_Welles_theatre_credits> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Leir_of_Britain> <http://dbpedia.org/> .
 <http://dbpedia.org/resource/King_Lear_of_Britain> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Leir_of_Britain> <http://dbpedia.org/> .
 <http://en.wikipedia.org/wiki/Leir_of_Britain> <http://xmlns.com/foaf/0.1/primaryTopic> <http://dbpedia.org/resource/Leir_of_Britain> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/FictionalCharacter> <http://dbpedia.org/> .
+<http://dbpedia.org/ontology/FictionalCharacter> <http://www.w3.org/2000/01/rdf-schema#label> "fictional character"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/WikicatFictionalCharactersIntroducedIn1954> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Ability105616246> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Abstraction100002137> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Cognition100023271> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Creativity105624700> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/FictionalCharacter109587565> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Hobbit109488995> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/ImaginaryBeing109483738> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/Imagination105625465> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/PsychologicalFeature100023100> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/class/yago/WikicatMiddle-earthHobbits> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Peregrin Tuk"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Peregrin Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2000/01/rdf-schema#comment> "Peregrin I Tuk (ur. w 2990 roku Trzeciej Ery, zm. w 69 Czwartej Ery) – postać ze stworzonej przez J.R.R. Tolkiena mitologii Śródziemia, hobbit, jeden z bohaterów Władcy Pierścieni. W adaptacji reżyserowanej Petera Jacksona zagrał go szkocki aktor Billy Boyd."@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2000/01/rdf-schema#comment> "Peregrin Took, more commonly known as Pippin, is a fictional character from J. R. R. Tolkien's fantasy novel The Lord of the Rings. Pippin is introduced as a young Hobbit, and plays a major role as one of the companions of Frodo Baggins, in his quest to destroy the One Ring. Pippin is a member of the Fellowship of the Ring."@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://rdf.freebase.com/ns/m.0gvj2> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://www.wikidata.org/entity/Q219493> <http://dbpedia.org/> .
+<http://www.wikidata.org/entity/Q219493> <http://www.w3.org/2000/01/rdf-schema#label> "Peregrin Tuk"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://cs.dbpedia.org/resource/Peregrin_Bral> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://es.dbpedia.org/resource/Peregrin_Tuk> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://fr.dbpedia.org/resource/Peregrin_Touc> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://id.dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://it.dbpedia.org/resource/Peregrino_Tuc> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://ja.dbpedia.org/resource/ペレグリン・トゥック> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://nl.dbpedia.org/resource/Peregrijn_Toek> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://pl.dbpedia.org/resource/Peregrin_Tuk> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://pt.dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://wikidata.dbpedia.org/resource/Q219493> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/2002/07/owl#sameAs> <http://yago-knowledge.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Middle-earth_Hobbits> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Middle-earth_Hobbits> <http://www.w3.org/2000/01/rdf-schema#label> "Middle-earth Hobbits"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:The_Lord_of_the_Rings_characters> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:The_Lord_of_the_Rings_characters> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings characters"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Fictional_characters_introduced_in_1954> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Fictional_characters_introduced_in_1954> <http://www.w3.org/2000/01/rdf-schema#label> "Fictional characters introduced in 1954"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Fictional_swordsmen> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Fictional_swordsmen> <http://www.w3.org/2000/01/rdf-schema#label> "Fictional swordsmen"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageID> "21920479"^^<http://www.w3.org/2001/XMLSchema#integer> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageRevisionID> "744760594"^^<http://www.w3.org/2001/XMLSchema#integer> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Category:Middle-earth_Hobbits> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Middle-earth_Hobbits> <http://www.w3.org/2000/01/rdf-schema#label> "Middle-earth Hobbits"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Category:The_Lord_of_the_Rings_characters> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:The_Lord_of_the_Rings_characters> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings characters"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Gandalf> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gandalf> <http://www.w3.org/2000/01/rdf-schema#label> "Gandalf"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Hobbit> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Hobbit> <http://www.w3.org/2000/01/rdf-schema#label> "Hobbit"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Lord_of_the_Rings> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Aragorn> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Aragorn> <http://www.w3.org/2000/01/rdf-schema#label> "Aragorn"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Orc_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Orc_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Orc (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Istari> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Istari> <http://www.w3.org/2000/01/rdf-schema#label> "Istari"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Hobitit> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Hobitit> <http://www.w3.org/2000/01/rdf-schema#label> "Hobitit"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Fictional_character> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fictional_character> <http://www.w3.org/2000/01/rdf-schema#label> "Fictional character"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/1978_in_film> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/1978_in_film> <http://www.w3.org/2000/01/rdf-schema#label> "1978 in film"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/1980_in_film> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/1980_in_film> <http://www.w3.org/2000/01/rdf-schema#label> "1980 in film"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Black_Gate_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Black_Gate_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Black Gate (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Uruk-hai> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Uruk-hai> <http://www.w3.org/2000/01/rdf-schema#label> "Uruk-hai"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Battle_of_the_Black_Gate> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Battle_of_the_Black_Gate> <http://www.w3.org/2000/01/rdf-schema#label> "Battle of the Black Gate"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Ent> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Ent> <http://www.w3.org/2000/01/rdf-schema#label> "Ent"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Troll_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Troll_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Troll (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/John_McAndrew> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/John_McAndrew> <http://www.w3.org/2000/01/rdf-schema#label> "John McAndrew"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Took_clan> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Took_clan> <http://www.w3.org/2000/01/rdf-schema#label> "Took clan"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Mordor> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Mordor> <http://www.w3.org/2000/01/rdf-schema#label> "Mordor"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Esmeralda_Brandybuck> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Esmeralda_Brandybuck> <http://www.w3.org/2000/01/rdf-schema#label> "Esmeralda Brandybuck"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Eglantine_Banks> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Eglantine_Banks> <http://www.w3.org/2000/01/rdf-schema#label> "Eglantine Banks"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Category:Fictional_characters_introduced_in_1954> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Fictional_characters_introduced_in_1954> <http://www.w3.org/2000/01/rdf-schema#label> "Fictional characters introduced in 1954"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Category:Fictional_swordsmen> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Category:Fictional_swordsmen> <http://www.w3.org/2000/01/rdf-schema#label> "Fictional swordsmen"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/J._R._R._Tolkien> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/J._R._R._Tolkien> <http://www.w3.org/2000/01/rdf-schema#label> "J. R. R. Tolkien"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/BBC> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/BBC> <http://www.w3.org/2000/01/rdf-schema#label> "BBC"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Old_Man_Willow> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Old_Man_Willow> <http://www.w3.org/2000/01/rdf-schema#label> "Old Man Willow"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Rohan> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Rohan> <http://www.w3.org/2000/01/rdf-schema#label> "Rohan"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Fellowship_of_the_Ring> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Fellowship_of_the_Ring> <http://www.w3.org/2000/01/rdf-schema#label> "Drużyna Pierścienia"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peter_Jackson> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peter_Jackson> <http://www.w3.org/2000/01/rdf-schema#label> "Peter Jackson"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Lord_of_the_Rings_(1981_radio_series)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(1981_radio_series)> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings (1981 radio series)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Council_of_Elrond> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Council_of_Elrond> <http://www.w3.org/2000/01/rdf-schema#label> "Council of Elrond"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Paladin_Took_II> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Paladin_Took_II> <http://www.w3.org/2000/01/rdf-schema#label> "Paladin Took II"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Rath_Dínen> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Rath_Dínen> <http://www.w3.org/2000/01/rdf-schema#label> "Rath Dínen"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Golf> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Golf> <http://www.w3.org/2000/01/rdf-schema#label> "Golf"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Radio> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Radio> <http://www.w3.org/2000/01/rdf-schema#label> "Radio"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Two_Towers> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Two_Towers> <http://www.w3.org/2000/01/rdf-schema#label> "The Two Towers"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Boromir> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Boromir> <http://www.w3.org/2000/01/rdf-schema#label> "Boromir"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Bullroarer_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Bullroarer_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Bullroarer Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Denethor> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Denethor> <http://www.w3.org/2000/01/rdf-schema#label> "Denethor"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Fellowship_of_the_Ring_(characters)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fellowship_of_the_Ring_(characters)> <http://www.w3.org/2000/01/rdf-schema#label> "Fellowship of the Ring (characters)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Gondor> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gondor> <http://www.w3.org/2000/01/rdf-schema#label> "Gondor"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Gríma_Wormtongue> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gríma_Wormtongue> <http://www.w3.org/2000/01/rdf-schema#label> "Gríma Wormtongue"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Lothlórien> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Lothlórien> <http://www.w3.org/2000/01/rdf-schema#label> "Lothlórien"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Palantír> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Palantír> <http://www.w3.org/2000/01/rdf-schema#label> "Palantír"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Ralph_Bakshi> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Ralph_Bakshi> <http://www.w3.org/2000/01/rdf-schema#label> "Ralph Bakshi"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Rivendell> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Rivendell> <http://www.w3.org/2000/01/rdf-schema#label> "Rivendell"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Rohan_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Rohan_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Rohan (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Samwise_Gamgee> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Samwise_Gamgee> <http://www.w3.org/2000/01/rdf-schema#label> "Samwise Gamgee"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Return_of_the_King> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Return_of_the_King> <http://www.w3.org/2000/01/rdf-schema#label> "The Return of the King"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Treebeard> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Treebeard> <http://www.w3.org/2000/01/rdf-schema#label> "Treebeard"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Battle_of_the_Pelennor_Fields> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Battle_of_the_Pelennor_Fields> <http://www.w3.org/2000/01/rdf-schema#label> "Battle of the Pelennor Fields"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Miniseries> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Miniseries> <http://www.w3.org/2000/01/rdf-schema#label> "Miniseries"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Rotoscope> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Rotoscope> <http://www.w3.org/2000/01/rdf-schema#label> "Rotoscope"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Bilbo_Baggins> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Bilbo_Baggins> <http://www.w3.org/2000/01/rdf-schema#label> "Bilbo Baggins"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Frodo_Baggins> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Frodo_Baggins> <http://www.w3.org/2000/01/rdf-schema#label> "Frodo Baggins"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Gimli_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gimli_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Gimli"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Scottish_people> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Scottish_people> <http://www.w3.org/2000/01/rdf-schema#label> "Scottish people"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Stewards_of_Gondor> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Stewards_of_Gondor> <http://www.w3.org/2000/01/rdf-schema#label> "Stewards of Gondor"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Billy_Boyd_(actor)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Billy_Boyd_(actor)> <http://www.w3.org/2000/01/rdf-schema#label> "Billy Boyd (actor)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Lord_of_the_Rings_(1978_film)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(1978_film)> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings (1978 film)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Lord_of_the_Rings_(film_series)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(film_series)> <http://www.w3.org/2000/01/rdf-schema#label> "The Lord of the Rings (film series)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Minas_Tirith> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Minas_Tirith> <http://www.w3.org/2000/01/rdf-schema#label> "Minas Tirith"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/War_of_the_Ring> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/War_of_the_Ring> <http://www.w3.org/2000/01/rdf-schema#label> "War of the Ring"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Sauron_Defeated> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Sauron_Defeated> <http://www.w3.org/2000/01/rdf-schema#label> "Sauron Defeated"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Billy_Barty> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Billy_Barty> <http://www.w3.org/2000/01/rdf-schema#label> "Billy Barty"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Sauron> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Sauron> <http://www.w3.org/2000/01/rdf-schema#label> "Sauron"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Shire_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Shire_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Shire (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Orthanc> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Orthanc> <http://www.w3.org/2000/01/rdf-schema#label> "Orthanc"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Hobbiton> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Hobbiton> <http://www.w3.org/2000/01/rdf-schema#label> "Hobbiton"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Isengard> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Isengard> <http://www.w3.org/2000/01/rdf-schema#label> "Isengard"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Mouth_of_Sauron> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Mouth_of_Sauron> <http://www.w3.org/2000/01/rdf-schema#label> "Mouth of Sauron"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_History_of_Middle-earth> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_History_of_Middle-earth> <http://www.w3.org/2000/01/rdf-schema#label> "The History of Middle-earth"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Meriadoc_Brandybuck> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Meriadoc_Brandybuck> <http://www.w3.org/2000/01/rdf-schema#label> "Meriadok Brandybuck"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Elrond> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Elrond> <http://www.w3.org/2000/01/rdf-schema#label> "Elrond"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Faramir> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Faramir> <http://www.w3.org/2000/01/rdf-schema#label> "Faramir"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Saruman> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Saruman> <http://www.w3.org/2000/01/rdf-schema#label> "Saruman"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/One_Ring> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/One_Ring> <http://www.w3.org/2000/01/rdf-schema#label> "Jedyny Pierścień"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Return_of_the_King_(1980_film)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Return_of_the_King_(1980_film)> <http://www.w3.org/2000/01/rdf-schema#label> "The Return of the King (1980 film)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Fallohide> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fallohide> <http://www.w3.org/2000/01/rdf-schema#label> "Fallohide"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/List_of_hobbits> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_hobbits> <http://www.w3.org/2000/01/rdf-schema#label> "List of hobbits"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Pearl_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pearl_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Pearl Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Pervinca_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pervinca_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Pervinca Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Pimpernel_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pimpernel_Took> <http://www.w3.org/2000/01/rdf-schema#label> "Pimpernel Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Thain_(Middle-earth)> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Thain_(Middle-earth)> <http://www.w3.org/2000/01/rdf-schema#label> "Thain (Middle-earth)"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Amon_Hen> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Amon_Hen> <http://www.w3.org/2000/01/rdf-schema#label> "Amon Hen"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Diamond_of_Long_Cleeve> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Diamond_of_Long_Cleeve> <http://www.w3.org/2000/01/rdf-schema#label> "Diamond of Long Cleeve"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/The_Scouring_of_the_Shire> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Scouring_of_the_Shire> <http://www.w3.org/2000/01/rdf-schema#label> "The Scouring of the Shire"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Dominic_Guard> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Dominic_Guard> <http://www.w3.org/2000/01/rdf-schema#label> "Dominic Guard"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Sonny_Melendrez> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Sonny_Melendrez> <http://www.w3.org/2000/01/rdf-schema#label> "Sonny Melendrez"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Legolas> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Legolas> <http://www.w3.org/2000/01/rdf-schema#label> "Legolas"@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Destruction_of_Isengard> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Destruction_of_Isengard> <http://www.w3.org/2000/01/rdf-schema#label> "Destruction of Isengard"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Frodo> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Frodo> <http://www.w3.org/2000/01/rdf-schema#label> "Frodo"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/List_of_Hobbits> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_Hobbits> <http://www.w3.org/2000/01/rdf-schema#label> "List of Hobbits"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/List_of_Middle-earth_roads> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_Middle-earth_roads> <http://www.w3.org/2000/01/rdf-schema#label> "List of Middle-earth roads"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/File:Pippinprintscreen.jpg> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/File:BakshiMerryPippin.JPG> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://xmlns.com/foaf/0.1/name> "Peregrin Took"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/dc/terms/description> "character from Lord of the Rings"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://xmlns.com/foaf/0.1/gender> "male"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://xmlns.com/foaf/0.1/isPrimaryTopicOf> <http://en.wikipedia.org/wiki/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://www.w3.org/ns/prov#wasDerivedFrom> <http://en.wikipedia.org/wiki/Peregrin_Took?oldid=744760594> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/abstract> "Peregrin I Tuk (ur. w 2990 roku Trzeciej Ery, zm. w 69 Czwartej Ery) – postać ze stworzonej przez J.R.R. Tolkiena mitologii Śródziemia, hobbit, jeden z bohaterów Władcy Pierścieni. W adaptacji reżyserowanej Petera Jacksona zagrał go szkocki aktor Billy Boyd."@pl <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/ontology/abstract> "Peregrin Took, more commonly known as Pippin, is a fictional character from J. R. R. Tolkien's fantasy novel The Lord of the Rings. Pippin is introduced as a young Hobbit, and plays a major role as one of the companions of Frodo Baggins, in his quest to destroy the One Ring. Pippin is a member of the Fellowship of the Ring."@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterCulture> "Hobbit, Shire-hobbit"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterAlias> "\"Ernil i Pheriannath\""^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterAlias> "Pippin, Pip,"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterAlias> "Razanur Tûk"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterAlias> "Thain Peregrin I,"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterName> "Peregrin Took"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/property/characterRace> "Hobbit"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#langString> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_Took> <http://purl.org/linguistics/gold/hypernym> <http://dbpedia.org/resource/Character> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Character> <http://www.w3.org/2000/01/rdf-schema#label> "Character"@en <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gandalf> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Hobbit> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Alan_and_Michael_Perry> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Aragorn> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Orc> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_Aragorn's_Quest> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Hobitit> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_Orc_characters> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Angmar> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Outline_of_Middle-earth> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Second_breakfast> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_roads> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Ent> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Red_Book_of_Westmarch> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Troll_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fangorn> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Steve_Peregrin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Took_clan> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Beregond_and_Bergil> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_I> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pippin_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Old_Man_Willow> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pip> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Fellowship_of_the_Ring> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Hobbit:_The_Battle_of_the_Five_Armies> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_Online:_Riders_of_Rohan> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Wizard_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Third_Age> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Farmer_Maggot> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_War_in_the_North> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(1955_radio_series)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(1981_radio_series)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/House_of_Telcontar> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_Middle-earth_characters> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_in_film> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Entish> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Lord_of_the_Rings_(musical)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Bromance> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_original_characters_in_The_Lord_of_the_Rings_film_series> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Magic_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrine> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Tom_Bombadil> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Bored_of_the_Rings> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Boromir> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Denethor> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fourth_Age> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fredegar_Bolger> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Glorfindel> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Goldberry> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gríma_Wormtongue> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Palantír> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Samwise_Gamgee> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Return_of_the_King> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Treebeard> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Éomer> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Um_Sang-hyun> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Battle_of_the_Pelennor_Fields> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_fictional_swords> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_hobbit_families> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fool_of_a_took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Bilbo_Baggins> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Frodo_Baggins> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Gimli_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pippin> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razanur_Tuk> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razanur_Tûk> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razar_Tûk> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Billy_Boyd_(actor)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Return_of_the_King> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Two_Towers> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(1978_film)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_(film_series)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings_Strategy_Battle_Game> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Minas_Tirith> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/War_of_the_Ring> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/J.R.R._Tolkien's_The_Lord_of_the_Rings,_Vol._I_(SNES_video_game)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_plants> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Alessio_Cavatore> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Sauron> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Shire_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_Lego_sets> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razar_Tuk> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Isengard> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Westron> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Meriadoc_Brandybuck> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Faramir> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Saruman> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Minor_places_in_Middle-earth_(fictional)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Middle-earth_wars_and_battles> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/A_Walking_Song> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Music_of_The_Lord_of_the_Rings_film_series> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring_(video_game)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Return_of_the_King_(video_game)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Lord_of_the_Rings:_The_Two_Towers_(video_game)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Return_of_the_King_(1980_film)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_hobbits> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Thain_(Middle-earth)> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Timeline_of_Arda> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Dead_Men_of_Dunharrow> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Old_Forest> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/The_Scouring_of_the_Shire> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Dominic_Guard> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Legolas> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fictional_food_and_drink_in_Middle-earth> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Shireplitis> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Tower_Guard_of_Gondor> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pip_Took> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pippin_the_hobbit> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/List_of_things_named_after_J._R._R._Tolkien_and_his_works> <http://dbpedia.org/ontology/wikiPageWikiLink> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Peregrin_I> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pippin_Took> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Fool_of_a_took> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razanur_Tuk> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razanur_Tûk> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razar_Tûk> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Razar_Tuk> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pip_Took> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Pippin_the_hobbit> <http://dbpedia.org/ontology/wikiPageRedirects> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://dbpedia.org/resource/Took> <http://dbpedia.org/ontology/wikiPageDisambiguates> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
+<http://en.wikipedia.org/wiki/Peregrin_Took> <http://xmlns.com/foaf/0.1/primaryTopic> <http://dbpedia.org/resource/Peregrin_Took> <http://dbpedia.org/> .
