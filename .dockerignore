@@ -1,7 +1,6 @@
-README.md
-pp_data
-.mypy_cache
-__pycache__
-build
-dist
-example_based_entity_search.egg-info
+# Ignore everything
+**
+
+# Allow files and directories
+!/setup.py
+!/example_based_entity_search/**

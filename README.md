@@ -17,13 +17,17 @@
 
 This tool solves a problem of searching relevant entities in [Linked Open Data](https://lod-cloud.net) (structured) graphs.
 
-Problem statement: given relation (plain text query like "astronauts who walked on the Moon") and set of examples (like [&lt;http://dbpedia.org/resource/Neil_Armstrong&gt;](http://dbpedia.org/resource/Neil_Armstrong) and [&lt;http://dbpedia.org/resource/Alan_Bean&gt;](http://dbpedia.org/resource/Alan_Bean) find another, matching examples.
+Problem statement: given relation (plain text query like "astronauts who walked on the Moon") and set of examples
+(like [&lt;http://dbpedia.org/resource/Neil_Armstrong&gt;](http://dbpedia.org/resource/Neil_Armstrong) and
+[&lt;http://dbpedia.org/resource/Alan_Bean&gt;](http://dbpedia.org/resource/Alan_Bean) find another, matching examples.
 
-Problem solution is described in the paper, but the main point is to rank entities based on the probability of being relevant to either relation (text-based approach) or examples (structured/example-based approach). Also combination of this approaches was proposed.
+Problem solution is described in the paper, but the main point is to rank entities based on the probability of being
+relevant to either relation (text-based approach) or examples (structured/example-based approach).
+Also combination of this approaches was proposed.
 
 Tool execution looks like:
 ```sh
-$ python ./example_based_entity_search/pp_entity_search.py ./pp_data/ --shell
+$ ebes-rank ./pp_data/ --shell
 Loading triples from files in directory `./pp_data/`
 Found 5 `.nq` files
 -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
@@ -86,7 +90,9 @@ Ranking - example-based:
 
 ## Running the tool
 
-Use `setup.py` or run with the Docker:
+Use `setup.py` to install scripts `ebes-data` and `ebes-rank`. 
+
+Or run with the Docker:
 ```sh
 git clone https://github.com/GrosQuildu/example_based_entity_search
 cd example_based_entity_search
@@ -94,7 +100,7 @@ docker build -t example_based_entity_search .
 docker run -it -v `pwd`/pp_data:/home/user/data example_based_entity_search
 ```
 
-This will mount `./pp_data` directory in the container (as `data`) and spawn interactive shell.
+Commands above will mount `./pp_data` directory in the container (as `data`) and spawn interactive shell.
 
 At the beginning, dbpedia.org endpoint is loaded. Now lets hand-craft some query:
 ```sh
@@ -145,7 +151,8 @@ Ranking - example-based:
  http://dbpedia.org/resource/James_Bond - 0.03087100330760749724366041903
 ```
 
-To change triples graph, run `load` command:
+It is pretty slow, because we need to do a lot of HTTP queries.
+If you have a file with RDF triples you may use it instead. Run `load` command:
 ```sh
 > load
 Path to triples file or SPARQL endpoint url: data/sample1.nq
@@ -153,7 +160,7 @@ Loading triples from file `data/sample1.nq`
 Switching PPGraph backend from remote endpoint to local files
 ```
 
-Now execute query from sample file:
+Now, instead of writing query from nothing, execute ready query from a sample file:
 ```sh
 > sample
 Sample file to use: data/sample1.yml
@@ -163,10 +170,17 @@ Ranking 20 entities
 ...
 ```
 
+If you don't have RDF file but want one, appropriate to a sample file, then use `ebes-data` (`dump_data.py`) script:
+```sh
+ebes-data -v pp_data/out.nq ./pp_data/sample1.yml not_relevant
+# or
+docker run -it -v `pwd`/pp_data:/home/user/data example_based_entity_search \
+       ebes-data -v data/out.nq ./data/sample1.yml relevant
+```
 
 ## Data
 #### Original
-The base blob of structured data used in the paper was BTC-2009:
+The base graph of structured data used in the paper was BTC-2009:
 
   * link: http://km.aifb.kit.edu/projects/btc-2009/
     
@@ -194,24 +208,26 @@ For queries (relations/topics and examples) three sets were used:
           * as qrels to wikipedia pages
           * semi-manuall mapping between pages and dbpedia URIs was done in the paper
 
-#### Problems
-I couldn't find a parser for data used in the paper (BTC-2009) efficient enough to be usable. Both [rdflib](https://github.com/RDFLib/rdflib) (in python) and [Redland librdf](http://librdf.org/) (in C with python bindings) were tested. Because of that I used remote [dbpedia.org](https://dbpedia.org/sparql) enpoint as a data collection.
+#### Local
 
-Topics and relevant data used in the paper are not accessible. I manually forged some samples: look for `.yml` files inside `pp_data` directory.
-
-The paper rank entities by computing "fitness" probability for every entity. But computing such probability for every known subject node seem impractical, as ther are a lot of them. For example: dbpedia.org contains few millions entities, if processing one entity takes 0.1 sec, then processing one user query would take about a week. Don't know how this problem should be tackled nor how it was solved in the paper. I just assume that few entities (probably both relevant and not-relevant) are provided as an input. 
+Topics and relevant data used in the paper are not accessible. I have manually forged some samples,
+look for `.yml` files inside `pp_data` directory. As a base graph I used [dbpedia.org](https://dbpedia.org/sparql).
+Triples relevant to samples can be found in `pp_data/*.nq` files. 
 
 #### Structure of data for this tools 
 
 To rank entities we need two things: triples graph (SemWeb data) and sample (query).
 
-Triples graph can be parsed from a file in any format supported by rdflib (RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, RDFa and Microdata). Also remote SPARQL endpoint can be used.
+Triples graph can be parsed from a file in any format supported by rdflib
+(RDF/XML, N3, NTriples, N-Quads, Turtle, TriX, RDFa and Microdata). Or remote SPARQL endpoint can be used.
 
 Query should be stored in a [YAML](https://yaml.org/) file with the following format:
+
 ```yaml
+
 ---
 topic: astronauts who walked on the Moon  # plain text relation
-examples: 4  # use this number of top relevant entities as examples
+examples: 1  # use this number of top relevant entities as examples
 relevant:  # examples and entities known to be relevant
     - http://dbpedia.org/resource/Neil_Armstrong
     - http://dbpedia.org/resource/Alan_Bean
@@ -223,13 +239,68 @@ not_relevant:  # entities known to be not relevant
 For "real" queries number of `relevant` entities would be equal to `examples` and `not_relevant`
 entities would be a list of all examples we want to rank.
 
-Not that the graph used should containt triples related with entities from the query.
+Note that the graph used should contain some triples related to every entity specified the query.
+So either use remote endpoint (which is slow but trustworthy) or make sure that RDF file you use
+contains necessary information. Possibly use `dump_data.py` (`ebes-data`) script for data acquisition. 
 
 ## Remarks
+* General
+
+    * I couldn't find a parser for data used in the paper (BTC-2009) efficient enough to be usable. 
+    Both [rdflib](https://github.com/RDFLib/rdflib) (in python) and [Redland librdf](http://librdf.org/)
+    (in C with python bindings) were tested. Because of that I used remote [dbpedia.org](https://dbpedia.org/sparql)
+    endpoint as a data collection and have dumped relevant triples from it. 
+
+    * The paper rank entities by computing "fitness" probability for every entity.
+    But computing such probability for every known subject node seem impractical, as there are a lot of them.
+    For example: dbpedia.org contains few millions entities, if processing one entity takes 0.1 sec,
+    then processing one user query would take about a week. Don't know how this problem should be tackled nor
+    how it was solved in the paper. I just assume that user provides all entities (probably both relevant and
+    not-relevant) that should be ranked.
+    
+    * No way to return correct amount of matching examples. For example when query says `ten ancient Greek city`
+    we can't handle this `ten`.   
+    
 * Text-based approach
 
-  * Dirichlet smoothing part of equations was poorly described in the paper. It is uncertain how "Dirichlet smoothed model of the entire collection of triples" (probability P(t|theta_c)) should be computed. Following standard approach (described in other resources) would require to iterate over all triples for every term in the relation, which is computationally expensive. Moreover, it would require every term to appear at least once in the collection, so as the probability won't be zero. Such requirement seems not to be stated in the paper. Also parameter `ni` was not provided.
-  In the implementation I used a simplified version of Dirichlet model. Nominator part is set to 1 and `ni` parameter to number of known entities (amount of subjects in the graph).
+  * Dirichlet smoothing part of equations was poorly described in the paper.
+  It is uncertain how "Dirichlet smoothed model of the entire collection of triples" (probability P(t|theta_c))
+  should be computed. Following standard approach (described in other resources) would require to iterate over
+  all triples for every term in the relation, which is computationally expensive. Moreover, it would require
+  every term to appear at least once in the collection, so as the probability won't be zero.
+  Such requirement seems not to be stated in the paper. Also parameter `ni` was not provided.
+  
+  In the implementation I used a simplified version of Dirichlet model.
+  Nominator part is set to 1 and `ni` parameter to number of known entities (amount of subjects in the graph).
 
-  * Final probabilities are products of partial probabilities and therefore are small. This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with example-based approach (which produces much higher probabilities).
+  * Final probabilities are products of partial probabilities and therefore are small.
+  This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with
+  example-based approach (which produces much higher probabilities). This problem is not mentioned in the paper.
 
+* Example-based approach
+
+  * Representing an entity as a set of inlink/outlink triples doesn't make much sense for triples
+   in which an object is Literal, because such triple won't match any other entity for sure.
+   It is (intuitively) better to Nullify subjects in such triples.
+   For example: 
+      ```
+      Entity A representation:
+        A -> y -> v (A1), outlink
+        A -> x -> B (A2), outlink
+
+      Entity B representation:
+        B -> y -> v (B1), outlink
+        A -> x -> B (B2), inlink
+      ```
+    Only `A2-B2` matches. But if:
+      ```
+      Entity A representation:
+        None -> y -> v (A1), outlink
+        A -> x -> B (A2), outlink
+
+      Entity B representation:
+        None -> y -> v (B1), outlink
+        A -> x -> B (B2), inlink
+      ```
+    Then both `A1-B2` and `A2-B2` match!
+ 

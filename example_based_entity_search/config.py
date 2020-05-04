@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-~Paweł Płatek
-'''
+"""Configuration file.
+
+    Author: Paweł Płatek
+"""
 
 import logging
 from decimal import Decimal as D
@@ -23,9 +24,9 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 TRIPLE_FILE_EXTENSIONS = ['nq', 'rdf']
 URI_PREFIX = 'http://dbpedia.org/resource/'  # prepend that in interactive shell
 SPARQL_ENDPOINT = 'http://dbpedia.org/sparql'  # default endpoint
-LANGS = ['en', 'pl', None, '']  # languages for text representation of tripples
+LANGS = ['en', 'pl', None, '']  # languages for text representation of triples
 D_PREC = D('0.00000')  # precision of floats in logging
-EXAMPLES_AMOUNT = 4  # how many relevant entities use as the examples
+EXAMPLES_AMOUNT = 4  # default amount of relevant entities use as examples
 
 logging.basicConfig(format='%(message)s')
 L = logging.getLogger('ebes')

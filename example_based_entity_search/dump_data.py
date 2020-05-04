@@ -1,42 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-~Paweł Płatek
-'''
+"""Utility tool for dumping useful data from SPARQL endpoint.
+
+    Author: Paweł Płatek
+"""
 
 import argparse
 from os.path import isfile
 from sys import exit
-from typing import List
+from typing import List, Union
 
-from rdflib import RDFS, BNode, URIRef
+from rdflib import RDFS, BNode, Literal, URIRef
 from yaml import YAMLError, safe_load
 
-from example_based_entity_search.config import (  # type: ignore
-    SPARQL_ENDPOINT, L)
-from example_based_entity_search.utils import load_data  # type: ignore
+from example_based_entity_search.config import SPARQL_ENDPOINT, L
+from example_based_entity_search.utils import load_data
 
 
-def n3_format(node):
-    """Format node (URIRef/Literal) to string in n3 format
-    Converted multiline strings to a single line
+def n3_format(node: Union[URIRef, Literal, BNode]):
+    """Formats node (URIRef/Literal) to string in n3 format.
+
+    Converts multiline strings to a single line.
     """
     return node.n3().replace('\n', '\\n').replace('"""', '"')
 
 
 def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[URIRef]):
-    """
-    Query remote endpoint for triples and save them in local file
-    For every entity in the list get triples like:
+    """Query remote endpoint for triples and save them in a local file.
+
+    For every entity in the list dump triples like:
         entity -> w/e -> Literal
         entity -> w/e -> URI
         URI -> label -> Literal
         w/e -> w/e -> entity
-
-    Args:
-        sparql_endpoint(str)
-        out_filename(str)
-        entities(list(URIRef))
     """
     entities_amount = len(entities)
     L.info('Getting data from remote endpoint "%s" for %d entities',
@@ -47,7 +43,7 @@ def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[U
         graph = load_data(sparql_endpoint)
     except Exception as e:
         L.error('Error when loading data from `%s`: %s', sparql_endpoint, e)
-        exit(1)
+        return
 
     # get triples for every entity in the list
     for i, entity in enumerate(entities):
@@ -133,7 +129,7 @@ def main():
         exit(1)
 
     if not isinstance(sample_data, dict):
-        L.error('Sampel data must be dictionary!')
+        L.error('Sample data must be dictionary!')
         exit(1)
 
     if args.sample_key not in sample_data.keys():

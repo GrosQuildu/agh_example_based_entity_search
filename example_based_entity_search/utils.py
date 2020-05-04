@@ -1,26 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-~Paweł Płatek
-'''
+"""Utilities for RDF handling.
+
+    Author: Paweł Płatek
+"""
 
 from glob import glob
 from os.path import isdir, isfile
-from typing import List
+from typing import List, Optional
 
 from rdflib import RDF, RDFS, BNode, ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.plugins.stores.sparqlstore import SPARQLStore
 from rdflib.util import guess_format
 
-from example_based_entity_search.config import LANGS  # type: ignore
-from example_based_entity_search.config import (PREFIXES, SPARQL_ENDPOINT,
+from example_based_entity_search.config import (LANGS, PREFIXES,
+                                                SPARQL_ENDPOINT,
                                                 TRIPLE_FILE_EXTENSIONS, L)
 
 
 class PPGraph:
-    """
-    Uniform interface for rdflib.Graph and rdflib.SPARQLStore
-    """
+    """Uniform interface for rdflib.Graph and rdflib.SPARQLStore."""
 
     def __init__(self, store):
         supported_backends = [SPARQLStore, Graph, ConjunctiveGraph]
@@ -35,7 +34,7 @@ class PPGraph:
             return attr
 
     def triples(self, *args, **kwargs):
-        """Lame but SPARQLStore returns different stuff than Graph"""
+        """Lame but SPARQLStore returns different stuff than Graph."""
 
         def check_triple(tr):
             if isinstance(tr[0], BNode) or isinstance(tr[2], BNode):
@@ -85,7 +84,6 @@ class PPGraph:
         """A generator of (predicate, object) tuples for the given subject"""
         for s, p, o in self.triples((subject, None, None)):
             yield p, o
-
     # copied end
 
     def label(self, entity):
@@ -128,7 +126,17 @@ class PPGraph:
         return self._size
 
 
-def load_data(data_url: str, old_graph: PPGraph = None) -> PPGraph:
+def load_data(data_url: str, old_graph: Optional[PPGraph] = None) -> PPGraph:
+    """Create new PPGraph or add triples to the provided one.
+
+    Args:
+        data_url: path to RDF file or url address of SPARQL endpoint,
+                    passing an url will invalidate old_graph
+        old_graph: existing graph, will add triples to it
+
+    Returns:
+        Graph with triples loaded from data_url (lazy loaded in case of SPARQL endpoint)
+    """
     if old_graph:
         graph = old_graph
     else:
@@ -203,15 +211,15 @@ if __name__ == '__main__':
     L.info('Running utils.py tests')
 
     # remote
-    data_urls = [SPARQL_ENDPOINT]
+    data_urls_to_test = [SPARQL_ENDPOINT]
 
     # one file
     local_files = glob('./pp_data/*.nq')
     if local_files:
-        data_urls.append(local_files[0])
+        data_urls_to_test.append(local_files[0])
 
     # all files in a directory
-    data_urls.append('./pp_data/')
+    data_urls_to_test.append('./pp_data/')
 
-    test_ppgraph(data_urls)
+    test_ppgraph(data_urls_to_test)
     L.info('Passed')
