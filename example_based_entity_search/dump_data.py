@@ -79,7 +79,7 @@ def get_and_store_data(sparql_endpoint: str, out_filename: str, entities: List[U
             result.append((triple_subject, triple_predicate, entity))
 
         L.debug('Saving %d triples', len(result))
-        with open(out_filename, 'a') as f:
+        with open(out_filename, 'a', encoding='utf8') as f:
             for tr in result:
 
                 f.write(' '.join(map(n3_format, tr)))

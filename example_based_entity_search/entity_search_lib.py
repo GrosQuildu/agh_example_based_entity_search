@@ -277,26 +277,26 @@ def examples_preparsing(graph, examples):
     # P(e_l | theta_X) = sum(tr in X) P(e_l|tr) * P(tr|theta_X)
     # P(tr|theta_X) = sum(x in X) n(tr, x) / dem
     # we can precompute P(tr|theta_X)
-    P_examples = dict()
+    preparsed_examples = dict()
     for example_representation in examples_representations:
         for tr in example_representation:
             nominator = D(0)
             for x in examples_representations:
                 if tr in x:
                     nominator += 1
-            P_examples[tr] = nominator / denominator
+            preparsed_examples[tr] = nominator / denominator
 
     L.debug('-' * 20)
-    return P_examples
+    return preparsed_examples
 
 
-def example_retrieval_model(P_examples: Dict[Triple, D], graph: PPGraph, entity: URIRef):
+def example_retrieval_model(preparsed_examples: Dict[Triple, D], graph: PPGraph, entity: URIRef):
     """Rates entity represented as set of triples.
 
     Rate is based on the similarity of sets.
 
     Args:
-        P_examples: preparsed example entities
+        preparsed_examples: preparsed example entities
         graph: RDF triples to use (graph represents whole word we know about)
         entity: RDF entity to rank
 
@@ -314,11 +314,11 @@ def example_retrieval_model(P_examples: Dict[Triple, D], graph: PPGraph, entity:
 
     # P(e_l | theta_X) = sum(tr in X) P(e_l|tr) * P(tr|theta_X)
     # P(e_l|tr) = 1 if tr in e_l else 0
-    # P(tr|theta_X) are in P_examples
+    # P(tr|theta_X) are in preparsed_examples
     final_probability = D(0)
-    for tr in P_examples.keys():
+    for tr in preparsed_examples.keys():
         if tr in representation:
-            final_probability += P_examples[tr]
+            final_probability += preparsed_examples[tr]
 
     L.debug('Probability: %s', final_probability)
     return final_probability

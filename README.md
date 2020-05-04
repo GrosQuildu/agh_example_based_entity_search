@@ -151,7 +151,7 @@ Ranking - example-based:
  http://dbpedia.org/resource/James_Bond - 0.03087100330760749724366041903
 ```
 
-It is pretty slow, because we need to do a lot of HTTP queries.
+It is pretty slow, because we need to do a lot of HTTP requests.
 If you have a file with RDF triples you may use it instead. Run `load` command:
 ```sh
 > load
@@ -174,6 +174,7 @@ If you don't have RDF file but want one, appropriate to a sample file, then use 
 ```sh
 ebes-data -v pp_data/out.nq ./pp_data/sample1.yml not_relevant
 # or
+chmod a+w pp_data
 docker run -it -v `pwd`/pp_data:/home/user/data example_based_entity_search \
        ebes-data -v data/out.nq ./data/sample1.yml relevant
 ```
