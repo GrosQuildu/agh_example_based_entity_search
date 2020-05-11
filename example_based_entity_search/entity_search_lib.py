@@ -25,7 +25,7 @@ def normalize(text):
     return str(text).lower()
 
 
-def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, Dict[str, int]]:
+def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, DefaultDict[str, int]]:
     """Creates text representation of the entity.
 
     Entity is represented with triples that have the entity as a subject. Such triples
@@ -92,9 +92,9 @@ def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, Dict[str, i
             break
 
     result = {
-        'attributes': dict(attributes),
-        'types': dict(types),
-        'links': dict(links)
+        'attributes': attributes,
+        'types': types,
+        'links': links
     }
     if entities_without_label > 0:
         L.debug('%d skipped, because of missing label', entities_without_label)

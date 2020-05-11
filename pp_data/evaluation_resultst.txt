@@ -1,0 +1,94 @@
+Loading graphs...
+Stats for `./pp_data/sample4.yml`:
+  Ranking with `text-based` method
+OO http://dbpedia.org/resource/Ephesus - 2.884056790626409878799122325E-20
+xx http://dbpedia.org/resource/Macedonia_(ancient_kingdom) - 1.421228260823159132223862247E-20
+xx http://dbpedia.org/resource/Rome - 9.492603578864353811347159044E-21
+OO http://dbpedia.org/resource/Pagasae - 5.495226845587315058638072290E-21
+OO http://dbpedia.org/resource/Elateia - 3.899862583172761673542497309E-21
+xx http://dbpedia.org/resource/Moscow - 3.271845167067586266969385886E-21
+xx http://dbpedia.org/resource/Jason - 3.213145705271621113346552853E-21
+    precision -> 0.42857
+  Ranking with `examples-based` method
+OO http://dbpedia.org/resource/Sidon - 0.008264462809917355371900826446
+OO http://dbpedia.org/resource/Samos - 0.008264462809917355371900826446
+OO http://dbpedia.org/resource/Ephesus - 0.008264462809917355371900826446
+xx http://dbpedia.org/resource/Åland_Islands - 0.005509641873278236914600550964
+xx http://dbpedia.org/resource/São_Tomé_and_Príncipe - 0.005509641873278236914600550964
+xx http://dbpedia.org/resource/Syria - 0.005509641873278236914600550964
+xx http://dbpedia.org/resource/Rome - 0.005509641873278236914600550964
+    precision -> 0.42857
+Stats for `./pp_data/sample6.yml`:
+  Ranking with `text-based` method
+xx http://dbpedia.org/resource/Poland - 2.200092883728335591277365775E-21
+xx http://dbpedia.org/resource/H._P._Lovecraft - 1.522184577085797336221508790E-21
+    precision -> 0.00000
+  Ranking with `examples-based` method
+xx http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.005633802816901408450704225351
+xx http://dbpedia.org/resource/Qui-Gon_Jinn - 0.005164319248826291079812206572
+    precision -> 0.00000
+Stats for `./pp_data/sample1.yml`:
+  Ranking with `text-based` method
+xx http://dbpedia.org/resource/Julaybib - 2.374726464319144394622377224E-30
+OO http://dbpedia.org/resource/Alan_Shepard - 2.149805060548479797831164338E-30
+xx http://dbpedia.org/resource/Louis_XVI_of_France - 1.930021450862217615174720805E-30
+xx http://dbpedia.org/resource/Odoacer - 1.923193744907281843843983081E-30
+OO http://dbpedia.org/resource/David_Scott - 1.874149873890035781955962027E-30
+OO http://dbpedia.org/resource/James_Irwin - 1.748944836057123244079001316E-30
+xx http://dbpedia.org/resource/Harry_Potter - 1.405266674597736522337448530E-30
+    precision -> 0.42857
+  Ranking with `examples-based` method
+OO http://dbpedia.org/resource/Alan_Shepard - 0.01122268163024217365623154162
+OO http://dbpedia.org/resource/Edgar_Mitchell - 0.005020673360897814530419373892
+OO http://dbpedia.org/resource/James_Irwin - 0.004725339633786178381571175428
+OO http://dbpedia.org/resource/Charles_Duke - 0.004725339633786178381571175426
+OO http://dbpedia.org/resource/David_Scott - 0.003839338452451269935026580034
+xx http://dbpedia.org/resource/Brad_Pitt - 0.002658003544004725339633786178
+xx http://dbpedia.org/resource/H._P._Lovecraft - 0.002362669816893089190785587714
+    precision -> 0.71429
+Stats for `./pp_data/sample3.yml`:
+  Ranking with `text-based` method
+xx http://dbpedia.org/resource/Portugal - 7.837004676862955555907038665E-35
+xx http://dbpedia.org/resource/Poland - 6.663514963221707113022814697E-35
+    precision -> 0.00000
+  Ranking with `examples-based` method
+OO http://dbpedia.org/resource/Miqdad_ibn_Aswad - 0.02961275626423690205011389525
+OO http://dbpedia.org/resource/Salman_the_Persian - 0.01822323462414578587699316630
+    precision -> 1.00000
+Stats for `./pp_data/sample2.yml`:
+  Ranking with `text-based` method
+OO http://dbpedia.org/resource/Equatorial_Guinea - 8.685633602046697958939061251E-36
+OO http://dbpedia.org/resource/East_Timor - 6.106152473441628290167337818E-36
+OO http://dbpedia.org/resource/Guinea-Bissau - 3.772242885247774135449085945E-36
+OO http://dbpedia.org/resource/Cape_Verde - 3.167225179069599055231054434E-36
+xx http://dbpedia.org/resource/Julaybib - 2.324190409616360100378289993E-36
+xx http://dbpedia.org/resource/Åland_Islands - 1.201170974930981558931601218E-36
+    precision -> 0.66667
+  Ranking with `examples-based` method
+OO http://dbpedia.org/resource/Equatorial_Guinea - 0.001006137438374081899587483650
+OO http://dbpedia.org/resource/São_Tomé_and_Príncipe - 0.0009558305664553778046081094678
+OO http://dbpedia.org/resource/Guinea-Bissau - 0.0009055236945366737096287352853
+OO http://dbpedia.org/resource/Cape_Verde - 0.0008552168226179696146493611030
+xx http://dbpedia.org/resource/Poland - 0.0008300633866586175671596740116
+OO http://dbpedia.org/resource/East_Timor - 0.0005785290270650970922628030992
+    precision -> 0.83333
+Stats for `./pp_data/sample5.yml`:
+  Ranking with `text-based` method
+xx http://dbpedia.org/resource/Portugal - 3.530120459751772576256794834E-31
+xx http://dbpedia.org/resource/Poland - 3.159681889877154169372118253E-31
+xx http://dbpedia.org/resource/England - 2.555879072727693543290805539E-31
+xx http://dbpedia.org/resource/Moscow - 1.519819406105389054221514653E-31
+xx http://dbpedia.org/resource/Louis_XVI_of_France - 1.502783614479944070207903294E-31
+    precision -> 0.00000
+  Ranking with `examples-based` method
+OO http://dbpedia.org/resource/Frodo_Baggins - 0.01218521527213647441104792851
+xx http://dbpedia.org/resource/Saruman - 0.008935824532900081234768480911
+OO http://dbpedia.org/resource/Gandalf - 0.008935824532900081234768480911
+OO http://dbpedia.org/resource/Boromir - 0.008935824532900081234768480911
+OO http://dbpedia.org/resource/Gimli_(Middle-earth) - 0.007311129163281884646628757109
+    precision -> 0.80000
+Mean stats:
+  Ranking with `text-based` method
+    precision -> 0.25397
+  Ranking with `examples-based` method
+    precision -> 0.62937

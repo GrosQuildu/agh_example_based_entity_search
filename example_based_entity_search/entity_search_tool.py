@@ -8,35 +8,63 @@
 
 import argparse
 from decimal import Decimal as D
-from os.path import isfile
-from random import shuffle
 from sys import exit
 from typing import List, Optional, Tuple
 
 from rdflib import URIRef
-from yaml import YAMLError, safe_load
 
-from example_based_entity_search.config import EXAMPLES_AMOUNT, URI_PREFIX, L
+from example_based_entity_search.config import D_PREC, URI_PREFIX, L
 from example_based_entity_search.entity_search_lib import (
     example_retrieval_model, examples_preparsing, rank, text_retrieval_model)
-from example_based_entity_search.utils import PPGraph, load_data
+from example_based_entity_search.utils import (PPGraph, data_from_sample_file,
+                                               load_data, statistical_stats)
+
+
+def do_all_rankings(graph: PPGraph, topic: str, examples: List[URIRef], entities_to_rank: List[URIRef], relevant: List[URIRef] = None):
+    """Ranks entities and prints results."""
+    # preparse examples for efficiency
+    preparsed_examples = examples_preparsing(graph, examples)
+
+    # make the ranking
+    ranking_text = rank(text_retrieval_model,
+                        topic, graph, entities_to_rank)
+
+    ranking_example = rank(example_retrieval_model,
+                           preparsed_examples, graph, entities_to_rank)
+
+    print_ranking('text-based', ranking_text, relevant)
+    print_ranking('example-based', ranking_example, relevant)
 
 
 def print_ranking(name: str, ranking: List[Tuple[D, URIRef]], relevant: Optional[List[URIRef]] = None):
+    """Prints ranking. If relevant entities are provided, also prints statistics."""
     print('-'*30)
     print(f'Ranking - {name}:')
-    for ranking_score, entity in ranking:
-        if relevant:
-            if entity in relevant:
-                print(f' OK {entity} - {ranking_score}')
-            else:
-                print(f' NO {entity} - {ranking_score}')
-        else:
+    if not relevant:
+        for ranking_score, entity in ranking:
             print(f' {entity} - {ranking_score}')
+        return
+
+    # how many top entities we would return in ideal case
+    # paper sets this to 100
+    evaluation_limit = len(relevant)
+    relevant_retrived = 0
+    for i, (ranking_score, entity) in enumerate(ranking):
+        if entity in relevant:
+            if i < evaluation_limit:
+                relevant_retrived += 1
+            print(f' OO {entity} - {ranking_score}')
+        else:
+            print(f' xx {entity} - {ranking_score}')
+
+    print('~'*10)
+    stats = statistical_stats(relevant_retrived, evaluation_limit)
+    for k, v in stats.items():
+        print(f' {k} -> {v.quantize(D_PREC)}')
 
 
 def shell(graph: PPGraph):
-    """Run interactive query shell"""
+    """Run interactive query shell."""
     L.info('-~'*30)
     L.info('Starting interactive shell')
 
@@ -67,7 +95,7 @@ def shell(graph: PPGraph):
         return URIRef(entity_string)
 
     def do_query(a_graph: PPGraph) -> None:
-        relation = input('Relation (R), as plain text: ')
+        topic = input('Relation (topic, R), as plain text: ')
 
         examples_amount = None
         while not examples_amount:
@@ -93,22 +121,11 @@ def shell(graph: PPGraph):
                 break
             entities_to_rank.append(parse_entity_from_string(entity))
 
-        # prepare examples for efficiency
-        P_examples = examples_preparsing(graph, examples)
-
-        # make the ranking
-        ranking_text = rank(text_retrieval_model,
-                            relation, graph, entities_to_rank)
-
-        ranking_example = rank(example_retrieval_model,
-                               P_examples, graph, entities_to_rank)
-
-        print_ranking('text-based', ranking_text)
-        print_ranking('example-based', ranking_example)
+        do_all_rankings(graph, topic, examples, entities_to_rank)
 
     def do_sample(graph):
         sample_file = input('Sample file to use: ')
-        rank_from_sample_file(graph, sample_file)
+        do_all_rankings(graph, *data_from_sample_file(sample_file))
 
     print_help()
     while True:
@@ -126,74 +143,6 @@ def shell(graph: PPGraph):
         else:
             print('Wrong input')
             print_help()
-
-
-def rank_from_sample_file(graph, sample_file):
-    L.info('Preparing ranking for sample file `%s`', sample_file)
-
-    if not isfile(sample_file):
-        L.error('File `%s` do not exists, aborting!', sample_file)
-        return
-
-    try:
-        with open(sample_file, 'r', encoding='utf8') as f:
-            sample_data = safe_load(f)
-    except (UnicodeDecodeError, YAMLError) as e:
-        L.error('Error loading sample file `%s`: %s', sample_file, e)
-        return
-
-    if not isinstance(sample_data, dict):
-        L.error('Sample data must be dictionary!')
-        return
-
-    for required_key in ['topic', 'relevant', 'not_relevant']:
-        if required_key not in sample_data.keys():
-            L.error('`%s` key not found in sample data', required_key)
-            return
-
-    # convert strings to URIRefs and prepare data
-    relevant = list(map(URIRef, sample_data['relevant']))
-    not_relevant = list(map(URIRef, sample_data['not_relevant']))
-    entities_to_rank = relevant[:] + not_relevant[:]
-
-    if len(relevant) == 0:
-        L.error('No relevant entities specified in the sample data')
-        return
-
-    examples_amount = EXAMPLES_AMOUNT
-    random_examples = True
-    if 'examples' in sample_data:
-        try:
-            examples_amount = int(sample_data['examples'])
-            random_examples = False
-            L.info('Using top %d entities as examples', examples_amount)
-        except Exception as e:
-            L.error('Error reading amount of examples from YAML file: %s', e)
-
-    if len(relevant) <= examples_amount:
-        L.warning(
-            'There is only %d relevant entities in sample data, trimming amount of examples', len(relevant))
-
-    # select random examples from relevant entities
-    examples = relevant[:]
-    if random_examples:
-        shuffle(examples)
-    examples = examples[:examples_amount]
-    for example in examples:
-        entities_to_rank.remove(example)
-
-    # prepare examples for efficiency
-    preparsed_examples = examples_preparsing(graph, examples)
-
-    # make the ranking
-    ranking_text = rank(text_retrieval_model,
-                        sample_data['topic'], graph, entities_to_rank)
-
-    ranking_example = rank(example_retrieval_model,
-                           preparsed_examples, graph, entities_to_rank)
-
-    print_ranking('text-based', ranking_text, relevant)
-    print_ranking('example-based', ranking_example, relevant)
 
 
 def main():
@@ -228,7 +177,7 @@ def main():
 
     # execute query from sample file
     if args.sample_file:
-        rank_from_sample_file(graph, args.sample_file)
+        do_all_rankings(graph, *data_from_sample_file(args.sample_file))
 
     # execute queries from shell
     if args.shell:

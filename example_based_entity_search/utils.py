@@ -5,16 +5,19 @@
     Author: Paweł Płatek
 """
 
+from decimal import Decimal as D
 from glob import glob
 from os.path import isdir, isfile
-from typing import List, Optional
+from random import shuffle
+from typing import Dict, List, Optional, Tuple
 
 from rdflib import RDF, RDFS, BNode, ConjunctiveGraph, Graph, Literal, URIRef
 from rdflib.plugins.stores.sparqlstore import SPARQLStore
 from rdflib.util import guess_format
+from yaml import YAMLError, safe_load
 
-from example_based_entity_search.config import (LANGS, PREFIXES,
-                                                SPARQL_ENDPOINT,
+from example_based_entity_search.config import (EXAMPLES_AMOUNT, LANGS,
+                                                PREFIXES, SPARQL_ENDPOINT,
                                                 TRIPLE_FILE_EXTENSIONS, L)
 
 
@@ -204,6 +207,72 @@ def test_ppgraph(data_urls: List[str]):
                 p, Literal) or isinstance(p, BNode)
             assert isinstance(o, URIRef) or isinstance(
                 o, Literal) or isinstance(o, BNode)
+
+
+def data_from_sample_file(sample_file: str) -> \
+        Tuple[str, List[URIRef], List[URIRef], List[URIRef]]:
+    """Parses sample file"""
+    L.info('Preparing ranking for sample file `%s`', sample_file)
+
+    if not isfile(sample_file):
+        L.error('File `%s` do not exists, aborting!', sample_file)
+        raise SyntaxError
+
+    try:
+        with open(sample_file, 'r', encoding='utf8') as f:
+            sample_data = safe_load(f)
+    except (UnicodeDecodeError, YAMLError) as e:
+        L.error('Error loading sample file `%s`: %s', sample_file, e)
+        raise SyntaxError
+
+    if not isinstance(sample_data, dict):
+        L.error('Sample data must be dictionary!')
+        raise SyntaxError
+
+    for required_key in ['topic', 'relevant', 'not_relevant']:
+        if required_key not in sample_data.keys():
+            L.error('`%s` key not found in sample data', required_key)
+            raise SyntaxError
+
+    # convert strings to URIRefs and prepare data
+    relevant = list(map(URIRef, sample_data['relevant']))
+    not_relevant = list(map(URIRef, sample_data['not_relevant']))
+
+    if len(relevant) == 0:
+        L.error('No relevant entities specified in the sample data')
+        raise SyntaxError
+
+    examples_amount = EXAMPLES_AMOUNT
+    random_examples = True
+    if 'examples' in sample_data:
+        try:
+            examples_amount = int(sample_data['examples'])
+            random_examples = False
+            L.info('Using top %d entities as examples', examples_amount)
+        except Exception as e:
+            L.error('Error reading amount of examples from YAML file: %s', e)
+
+    if len(relevant) <= examples_amount:
+        L.warning(
+            'There is only %d relevant entities in sample data `%s`, trimming amount of examples', len(relevant), sample_file)
+
+    # select random examples from relevant entities
+    if random_examples:
+        shuffle(relevant)
+
+    # prepare entities
+    examples = relevant[:examples_amount]
+    relevant = relevant[examples_amount:]
+    entities_to_rank = relevant[:] + not_relevant[:]
+
+    return sample_data['topic'], examples, entities_to_rank, relevant
+
+
+def statistical_stats(relevant_retrived: int, retrived: int) -> Dict[str, D]:
+    """Compute various evaluation measures."""
+    # A measure of the ability of a system to present only relevant items
+    precision = D(relevant_retrived) / retrived
+    return {'precision': precision}
 
 
 if __name__ == '__main__':

@@ -29,7 +29,7 @@ Tool execution looks like:
 ```sh
 $ ebes-rank ./pp_data/ --shell
 Loading triples from files in directory `./pp_data/`
-Found 5 `.nq` files
+Found 6 `.nq` files
 -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
 Starting interactive shell
 h/help - print this help
@@ -44,48 +44,26 @@ Ranking 20 entities
 ...
 ------------------------------
 Ranking - text-based:
- OK http://dbpedia.org/resource/Buzz_Aldrin - 8.403523093400763812246367990E-30
- OK http://dbpedia.org/resource/Harrison_Schmitt - 6.341459520844494029874975429E-30
- OK http://dbpedia.org/resource/Neil_Armstrong - 3.853314213149515399003529054E-30
- OK http://dbpedia.org/resource/Alan_Shepard - 3.182195457936311474102390319E-30
- NO http://dbpedia.org/resource/Louis_XVI_of_France - 2.855930219419808238422461393E-30
- NO http://dbpedia.org/resource/Odoacer - 2.847910451500284397485284457E-30
- NO http://dbpedia.org/resource/Harry_Potter - 2.080013520648365938729348544E-30
- OK http://dbpedia.org/resource/Charles_Duke - 1.211139645598227351159427758E-30
- NO http://dbpedia.org/resource/Samuel_Beckett - 5.132920069928481291855411872E-31
- NO http://dbpedia.org/resource/Chaz_Bono - 3.166097541652364891122272746E-31
- NO http://dbpedia.org/resource/Brad_Pitt - 2.312952965173047858611960955E-31
- NO http://dbpedia.org/resource/Menelaus - 1.699779542314832638553178478E-31
- NO http://dbpedia.org/resource/Gero_von_Wilpert - 1.483207159209379175098285078E-31
- NO http://dbpedia.org/resource/Cameron_Diaz - 1.463174421742162322936943486E-31
- NO http://dbpedia.org/resource/Bolesław_Leśmian - 7.662270280768847858922275770E-32
- NO http://dbpedia.org/resource/Edward_Thomas_(poet) - 7.644492007044185460333287629E-32
- NO http://dbpedia.org/resource/Edmund_Rich - 7.550239209520260932104305842E-32
- NO http://dbpedia.org/resource/Pope_Leo_VIII - 5.116978826336706868394768505E-32
- OK http://dbpedia.org/resource/Gene_Cernan - 1.427739517906317019845690401E-32
- OK http://dbpedia.org/resource/John_Young - 1.421946338029700446985601333E-32
+ OO http://dbpedia.org/resource/Alan_Shepard - 2.149805060548479797831164338E-30
+ xx http://dbpedia.org/resource/Louis_XVI_of_France - 1.930021450862217615174720805E-30
+ xx http://dbpedia.org/resource/Odoacer - 1.923193744907281843843983081E-30
+ OO http://dbpedia.org/resource/David_Scott - 1.874149873890035781955962027E-30
+ OO http://dbpedia.org/resource/James_Irwin - 1.748944836057123244079001316E-30
+ xx http://dbpedia.org/resource/Harry_Potter - 1.405266674597736522337448530E-30
+...
+~~~~~~~~~~
+ precision -> 0.57143
 ------------------------------
 Ranking - example-based:
- OK http://dbpedia.org/resource/Buzz_Aldrin - 0.1669154971633323380113466732
- OK http://dbpedia.org/resource/Alan_Shepard - 0.1630337414153478650343386106
- OK http://dbpedia.org/resource/Neil_Armstrong - 0.1537772469393848910122424631
- OK http://dbpedia.org/resource/Charles_Duke - 0.1475067184234099731263063610
- OK http://dbpedia.org/resource/Harrison_Schmitt - 0.09405792773962376828904150500
- NO http://dbpedia.org/resource/Edward_Thomas_(poet) - 0.03493580173186025679307255896
- NO http://dbpedia.org/resource/Brad_Pitt - 0.03194983577187220065691251122
- NO http://dbpedia.org/resource/Chaz_Bono - 0.03165123917587339504329650644
- NO http://dbpedia.org/resource/Samuel_Beckett - 0.03135264257987458942968050166
- NO http://dbpedia.org/resource/Cameron_Diaz - 0.03015825619587936697521648255
- NO http://dbpedia.org/resource/Gero_von_Wilpert - 0.02896386981188414452075246342
- NO http://dbpedia.org/resource/Odoacer - 0.02866527321588533890713645864
- NO http://dbpedia.org/resource/Louis_XVI_of_France - 0.02776948342788892206628844431
- NO http://dbpedia.org/resource/Edmund_Rich - 0.02657509704389369961182442520
- NO http://dbpedia.org/resource/Pope_Leo_VIII - 0.02478351746790086593012839653
- NO http://dbpedia.org/resource/Bolesław_Leśmian - 0.02448492087190206031651239176
- NO http://dbpedia.org/resource/Menelaus - 0.02388772767990444908928038220
- NO http://dbpedia.org/resource/Harry_Potter - 0.006569125111973723499552105106
- OK http://dbpedia.org/resource/Gene_Cernan - 0.006270528515974917885936100328
- OK http://dbpedia.org/resource/John_Young - 0
+ OO http://dbpedia.org/resource/Alan_Shepard - 0.01122268163024217365623154162
+ OO http://dbpedia.org/resource/Edgar_Mitchell - 0.005020673360897814530419373892
+ OO http://dbpedia.org/resource/James_Irwin - 0.004725339633786178381571175428
+ OO http://dbpedia.org/resource/Charles_Duke - 0.004725339633786178381571175426
+ OO http://dbpedia.org/resource/David_Scott - 0.003839338452451269935026580034
+ xx http://dbpedia.org/resource/Brad_Pitt - 0.002658003544004725339633786178
+...
+~~~~~~~~~~
+ precision -> 0.71429
 ```
 
 ## Running the tool
@@ -139,35 +117,75 @@ Ranking - text-based:
  http://dbpedia.org/resource/G._K._Chesterton - 2.873440129133987334846882730E-17
 ------------------------------
 Ranking - example-based:
- http://dbpedia.org/resource/Darth_Vader - 0.3197353914002205071664829098
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.2149944873208379272326350602
- http://dbpedia.org/resource/Yoda - 0.1797133406835722160970231530
- http://dbpedia.org/resource/Mace_Windu - 0.1543550165380374862183020947
- http://dbpedia.org/resource/Darth_Maul - 0.1543550165380374862183020947
- http://dbpedia.org/resource/Qui-Gon_Jinn - 0.1356119073869900771775082689
- http://dbpedia.org/resource/Revan - 0.08489525909592061742006615223
- http://dbpedia.org/resource/Sauron - 0.04410143329658213891951488434
- http://dbpedia.org/resource/G._K._Chesterton - 0.03528114663726571113561190740
- http://dbpedia.org/resource/James_Bond - 0.03087100330760749724366041903
+ http://dbpedia.org/resource/Yoda - 0.007909604519774011299435028251
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 0.007909604519774011299435028249
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.007909604519774011299435028249
+ http://dbpedia.org/resource/Mace_Windu - 0.007909604519774011299435028249
+ http://dbpedia.org/resource/Darth_Vader - 0.007909604519774011299435028249
+ http://dbpedia.org/resource/Darth_Maul - 0.004519774011299435028248587571
+ http://dbpedia.org/resource/Revan - 0.003389830508474576271186440679
+ http://dbpedia.org/resource/Sauron - 0.001129943502824858757062146893
+ http://dbpedia.org/resource/G._K._Chesterton - 0.001129943502824858757062146893
+ http://dbpedia.org/resource/James_Bond - 0
 ```
 
 It is pretty slow, because we need to do a lot of HTTP requests.
 If you have a file with RDF triples you may use it instead. Run `load` command:
 ```sh
 > load
-Path to triples file or SPARQL endpoint url: data/sample1.nq
-Loading triples from file `data/sample1.nq`
+Path to triples file or SPARQL endpoint url: data/sample5.nq
+Loading triples from file `data/sample5.nq`
 Switching PPGraph backend from remote endpoint to local files
 ```
 
 Now, instead of writing query from nothing, execute ready query from a sample file:
 ```sh
 > sample
-Sample file to use: data/sample1.yml
-Preparing ranking for sample file `data/sample1.yml`
-Ranking 20 entities
+Sample file to use: data/sample5.yml
+Preparing ranking for sample file `data/sample5.yml`
+Ranking 16 entities
  ~> ranking entity no 0 / 20
 ...
+------------------------------
+Ranking - text-based:
+ OO http://dbpedia.org/resource/Boromir - 2.934713853186765002546771801E-23
+ OO http://dbpedia.org/resource/Gandalf - 1.946241300960820230942345083E-23
+ xx http://dbpedia.org/resource/Isildur - 1.878114332953757029860946284E-23
+ OO http://dbpedia.org/resource/Gimli_(Middle-earth) - 6.883299615074009296265631534E-24
+ xx http://dbpedia.org/resource/Saruman - 5.160899299947102073001672565E-24
+ xx http://dbpedia.org/resource/King_Arthur - 4.060628871327632192167229192E-24
+ xx http://dbpedia.org/resource/Sauron - 2.623427028120836409202092707E-24
+ OO http://dbpedia.org/resource/Frodo_Baggins - 2.374169944796889318564718472E-24
+ xx http://dbpedia.org/resource/Bilbo_Baggins - 2.214659323027436965422680638E-24
+ OO http://dbpedia.org/resource/Legolas - 7.120837002688267337083381729E-25
+ xx http://dbpedia.org/resource/Jason - 6.370315541440045388034964235E-25
+ xx http://dbpedia.org/resource/Elrond - 6.082849141765376294898133877E-25
+ xx http://dbpedia.org/resource/Manwë - 4.156643217958239018720883389E-25
+ xx http://dbpedia.org/resource/Leir_of_Britain - 2.093834120300476037805863193E-25
+ xx http://dbpedia.org/resource/Balin_(Middle-earth) - 1.321636116498028375912430476E-25
+ xx http://dbpedia.org/resource/Peter_Pan - 7.969644887246789495404047439E-26
+~~~~~~~~~~
+ precision -> 0.60000
+------------------------------
+Ranking - example-based:
+ OO http://dbpedia.org/resource/Frodo_Baggins - 0.01218521527213647441104792851
+ xx http://dbpedia.org/resource/Saruman - 0.008935824532900081234768480911
+ OO http://dbpedia.org/resource/Gandalf - 0.008935824532900081234768480911
+ OO http://dbpedia.org/resource/Boromir - 0.008935824532900081234768480911
+ OO http://dbpedia.org/resource/Gimli_(Middle-earth) - 0.007311129163281884646628757109
+ xx http://dbpedia.org/resource/Sauron - 0.006498781478472786352558895208
+ OO http://dbpedia.org/resource/Legolas - 0.006498781478472786352558895208
+ xx http://dbpedia.org/resource/Bilbo_Baggins - 0.006498781478472786352558895208
+ xx http://dbpedia.org/resource/Elrond - 0.004061738424045491470349309505
+ xx http://dbpedia.org/resource/Isildur - 0.003249390739236393176279447604
+ xx http://dbpedia.org/resource/Peter_Pan - 0.002437043054427294882209585703
+ xx http://dbpedia.org/resource/Leir_of_Britain - 0.002437043054427294882209585703
+ xx http://dbpedia.org/resource/King_Arthur - 0.002437043054427294882209585703
+ xx http://dbpedia.org/resource/Jason - 0.002437043054427294882209585703
+ xx http://dbpedia.org/resource/Balin_(Middle-earth) - 0.002437043054427294882209585703
+ xx http://dbpedia.org/resource/Manwë - 0
+~~~~~~~~~~
+ precision -> 0.80000
 ```
 
 If you don't have RDF file but want one, appropriate to a sample file, then use `ebes-data` (`dump_data.py`) script:
@@ -177,6 +195,18 @@ ebes-data -v pp_data/out.nq ./pp_data/sample1.yml not_relevant
 chmod a+w pp_data
 docker run -it -v `pwd`/pp_data:/home/user/data example_based_entity_search \
        ebes-data -v data/out.nq ./data/sample1.yml relevant
+```
+
+To evaluate the tool on multiple triples files and samples, run `evaluate.py` script:
+```sh
+$ python ./example_based_entity_search/evaluate.py ./pp_data
+Loading graphs...
+...
+Mean stats:
+  Ranking with `text-based` method
+    precision -> 0.25397
+  Ranking with `examples-based` method
+    precision -> 0.62937
 ```
 
 ## Data
