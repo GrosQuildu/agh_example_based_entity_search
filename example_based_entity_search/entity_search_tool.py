@@ -14,26 +14,25 @@ from typing import List, Optional, Tuple
 from rdflib import URIRef
 
 from example_based_entity_search.config import D_PREC, URI_PREFIX, L
-from example_based_entity_search.entity_search_lib import (
-    example_retrieval_model, examples_preparsing, rank, text_retrieval_model)
+from example_based_entity_search.entity_search_lib import (rank_combined,
+                                                           rank_examples_based,
+                                                           rank_text_based)
 from example_based_entity_search.utils import (PPGraph, data_from_sample_file,
                                                load_data, statistical_stats)
 
 
 def do_all_rankings(graph: PPGraph, topic: str, examples: List[URIRef], entities_to_rank: List[URIRef], relevant: List[URIRef] = None):
     """Ranks entities and prints results."""
-    # preparse examples for efficiency
-    preparsed_examples = examples_preparsing(graph, examples)
+    # make the rankings
+    ranking_text = rank_text_based(graph, (topic, examples), entities_to_rank)
+    ranking_example = rank_examples_based(
+        graph, (topic, examples), entities_to_rank)
+    ranking_combined = rank_combined((ranking_text, ranking_example))
 
-    # make the ranking
-    ranking_text = rank(text_retrieval_model,
-                        topic, graph, entities_to_rank)
-
-    ranking_example = rank(example_retrieval_model,
-                           preparsed_examples, graph, entities_to_rank)
-
-    print_ranking('text-based', ranking_text, relevant)
-    print_ranking('example-based', ranking_example, relevant)
+    # and print the results
+    print_ranking('text-based', ranking_text[1], relevant)
+    print_ranking('example-based', ranking_example[1], relevant)
+    print_ranking('combined', ranking_combined[1], relevant)
 
 
 def print_ranking(name: str, ranking: List[Tuple[D, URIRef]], relevant: Optional[List[URIRef]] = None):
@@ -48,17 +47,19 @@ def print_ranking(name: str, ranking: List[Tuple[D, URIRef]], relevant: Optional
     # how many top entities we would return in ideal case
     # paper sets this to 100
     evaluation_limit = len(relevant)
-    relevant_retrived = 0
+    retrived: List[bool] = []
     for i, (ranking_score, entity) in enumerate(ranking):
         if entity in relevant:
             if i < evaluation_limit:
-                relevant_retrived += 1
+                retrived.append(True)
             print(f' OO {entity} - {ranking_score}')
         else:
+            if i < evaluation_limit:
+                retrived.append(False)
             print(f' xx {entity} - {ranking_score}')
 
     print('~'*10)
-    stats = statistical_stats(relevant_retrived, evaluation_limit)
+    stats = statistical_stats(retrived)
     for k, v in stats.items():
         print(f' {k} -> {v.quantize(D_PREC)}')
 

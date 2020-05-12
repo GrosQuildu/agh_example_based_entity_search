@@ -268,11 +268,21 @@ def data_from_sample_file(sample_file: str) -> \
     return sample_data['topic'], examples, entities_to_rank, relevant
 
 
-def statistical_stats(relevant_retrived: int, retrived: int) -> Dict[str, D]:
+def statistical_stats(retrived: List[bool]) -> Dict[str, D]:
     """Compute various evaluation measures."""
     # A measure of the ability of a system to present only relevant items
-    precision = D(relevant_retrived) / retrived
-    return {'precision': precision}
+    r_precision = D(sum(retrived)) / len(retrived)
+    avg_prec = D(0)
+
+    if len(retrived) != 0:
+        relevant_so_far = D(0)
+        for i, is_relevant in enumerate(retrived, 1):
+            if is_relevant:
+                relevant_so_far += 1
+                avg_prec += relevant_so_far / i
+        avg_prec /= len(retrived)
+
+    return {'R-Precision': r_precision, 'AvgPrec': avg_prec}
 
 
 if __name__ == '__main__':

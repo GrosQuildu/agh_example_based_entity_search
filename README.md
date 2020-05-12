@@ -23,7 +23,7 @@ Problem statement: given relation (plain text query like "astronauts who walked 
 
 Problem solution is described in the paper, but the main point is to rank entities based on the probability of being
 relevant to either relation (text-based approach) or examples (structured/example-based approach).
-Also combination of this approaches was proposed.
+Also combination of this approaches can be used.
 
 Tool execution looks like:
 ```sh
@@ -40,30 +40,42 @@ e/exit - exit shell
 > sample
 Sample file to use: pp_data/sample1.yml
 Preparing ranking for sample file
+Using top 4 entities as examples
 Ranking 20 entities
 ...
 ------------------------------
 Ranking - text-based:
- OO http://dbpedia.org/resource/Alan_Shepard - 2.149805060548479797831164338E-30
- xx http://dbpedia.org/resource/Louis_XVI_of_France - 1.930021450862217615174720805E-30
- xx http://dbpedia.org/resource/Odoacer - 1.923193744907281843843983081E-30
- OO http://dbpedia.org/resource/David_Scott - 1.874149873890035781955962027E-30
- OO http://dbpedia.org/resource/James_Irwin - 1.748944836057123244079001316E-30
- xx http://dbpedia.org/resource/Harry_Potter - 1.405266674597736522337448530E-30
+ OO http://dbpedia.org/resource/Alan_Shepard - 1
+ xx http://dbpedia.org/resource/Louis_XVI_of_France - 0.8973074683334651330017202616
+ xx http://dbpedia.org/resource/Odoacer - 0.8941172649739520290907284717
+ OO http://dbpedia.org/resource/David_Scott - 0.8712018197108706074555150168
+ OO http://dbpedia.org/resource/James_Irwin - 0.8127005405171212168537938517
 ...
 ~~~~~~~~~~
- precision -> 0.57143
+ R-Precision -> 0.57143
+ AvgPrec -> 0.38163
 ------------------------------
 Ranking - example-based:
- OO http://dbpedia.org/resource/Alan_Shepard - 0.01122268163024217365623154162
- OO http://dbpedia.org/resource/Edgar_Mitchell - 0.005020673360897814530419373892
- OO http://dbpedia.org/resource/James_Irwin - 0.004725339633786178381571175428
- OO http://dbpedia.org/resource/Charles_Duke - 0.004725339633786178381571175426
- OO http://dbpedia.org/resource/David_Scott - 0.003839338452451269935026580034
- xx http://dbpedia.org/resource/Brad_Pitt - 0.002658003544004725339633786178
+ OO http://dbpedia.org/resource/Alan_Shepard - 1
+ OO http://dbpedia.org/resource/Edgar_Mitchell - 0.4473684210526315789473684217
+ OO http://dbpedia.org/resource/James_Irwin - 0.4210526315789473684210526322
+ OO http://dbpedia.org/resource/Charles_Duke - 0.4210526315789473684210526322
+ OO http://dbpedia.org/resource/David_Scott - 0.3421052631578947368421052637
 ...
 ~~~~~~~~~~
- precision -> 0.71429
+ R-Precision -> 0.71429
+ AvgPrec -> 0.71429
+------------------------------
+Ranking - combined:
+ OO http://dbpedia.org/resource/Alan_Shepard - 1.0
+ OO http://dbpedia.org/resource/Edgar_Mitchell - 0.4636328183698531518161590468
+ OO http://dbpedia.org/resource/James_Irwin - 0.4602174224727647532643267542
+ OO http://dbpedia.org/resource/Charles_Duke - 0.4167145410859756810084905718
+ OO http://dbpedia.org/resource/David_Scott - 0.3950149188131923239034462390
+...
+~~~~~~~~~~
+ R-Precision -> 0.71429
+ AvgPrec -> 0.71429
 ```
 
 ## Running the tool
@@ -105,28 +117,40 @@ Ranking 10 entities
 ...
 ------------------------------
 Ranking - text-based:
- http://dbpedia.org/resource/Darth_Vader - 1.405558168120405905088125607E-16
- http://dbpedia.org/resource/Revan - 1.398970640143771268550264186E-16
- http://dbpedia.org/resource/Darth_Maul - 1.324117820519982851698630489E-16
- http://dbpedia.org/resource/Mace_Windu - 8.523851958480738507552716070E-17
- http://dbpedia.org/resource/James_Bond - 4.851968887117295073021727182E-17
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 4.633994123207575686367693457E-17
- http://dbpedia.org/resource/Qui-Gon_Jinn - 4.177985724050877073177547586E-17
- http://dbpedia.org/resource/Yoda - 3.461588235149503761620056721E-17
- http://dbpedia.org/resource/Sauron - 2.903879954877150388445926839E-17
- http://dbpedia.org/resource/G._K._Chesterton - 2.873440129133987334846882730E-17
+ http://dbpedia.org/resource/Darth_Vader - 1
+ http://dbpedia.org/resource/Revan - 0.9941088851845064208453746594
+ http://dbpedia.org/resource/Darth_Maul - 0.9271692750255459152127209907
+ http://dbpedia.org/resource/Mace_Windu - 0.5053067699988764603154636999
+ http://dbpedia.org/resource/James_Bond - 0.1769364793649063167785469810
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.1574433650187221333035511766
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 0.1166633054001528293587669988
+ http://dbpedia.org/resource/Yoda - 0.05259709003653568294731773713
+ http://dbpedia.org/resource/Sauron - 0.002722182115243205931012787568
+ http://dbpedia.org/resource/G._K._Chesterton - 0.0
 ------------------------------
 Ranking - example-based:
- http://dbpedia.org/resource/Yoda - 0.007909604519774011299435028251
- http://dbpedia.org/resource/Qui-Gon_Jinn - 0.007909604519774011299435028249
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.007909604519774011299435028249
- http://dbpedia.org/resource/Mace_Windu - 0.007909604519774011299435028249
- http://dbpedia.org/resource/Darth_Vader - 0.007909604519774011299435028249
- http://dbpedia.org/resource/Darth_Maul - 0.004519774011299435028248587571
- http://dbpedia.org/resource/Revan - 0.003389830508474576271186440679
- http://dbpedia.org/resource/Sauron - 0.001129943502824858757062146893
- http://dbpedia.org/resource/G._K._Chesterton - 0.001129943502824858757062146893
- http://dbpedia.org/resource/James_Bond - 0
+ http://dbpedia.org/resource/Yoda - 1
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 1
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 1
+ http://dbpedia.org/resource/Mace_Windu - 1
+ http://dbpedia.org/resource/Darth_Vader - 1
+ http://dbpedia.org/resource/Darth_Maul - 0.6
+ http://dbpedia.org/resource/Sauron - 0.2
+ http://dbpedia.org/resource/Revan - 0.2
+ http://dbpedia.org/resource/G._K._Chesterton - 0.2
+ http://dbpedia.org/resource/James_Bond - 0E+30
+------------------------------
+Ranking - combined:
+ http://dbpedia.org/resource/Yoda - 1
+ http://dbpedia.org/resource/Qui-Gon_Jinn - 1
+ http://dbpedia.org/resource/Obi-Wan_Kenobi - 1
+ http://dbpedia.org/resource/Mace_Windu - 1
+ http://dbpedia.org/resource/Darth_Vader - 1
+ http://dbpedia.org/resource/Darth_Maul - 0.6
+ http://dbpedia.org/resource/Sauron - 0.2
+ http://dbpedia.org/resource/Revan - 0.2
+ http://dbpedia.org/resource/G._K._Chesterton - 0.2
+ http://dbpedia.org/resource/James_Bond - 0E+30
 ```
 
 It is pretty slow, because we need to do a lot of HTTP requests.
@@ -291,7 +315,12 @@ contains necessary information. Possibly use `dump_data.py` (`ebes-data`) script
     
     * No way to return correct amount of matching examples. For example when query says `ten ancient Greek city`
     we can't handle this `ten`.   
+
+    * Text-based probabilities are products of partial probabilities and therefore are small.
+    This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with example-based approach, which produces much higher probabilities. This problem is not mentioned in the paper. I have applied min-max normalization.
     
+    * It is not described how examples were used to compute average precision (AP) for a ranked list. I check mean score of examples achived in a model and if it is lower than score of the best scored entity I consider model not suitable for the query.  
+
 * Text-based approach
 
   * Dirichlet smoothing part of equations was poorly described in the paper.
@@ -303,10 +332,6 @@ contains necessary information. Possibly use `dump_data.py` (`ebes-data`) script
   
   In the implementation I used a simplified version of Dirichlet model.
   Nominator part is set to 1 and `ni` parameter to number of known entities (amount of subjects in the graph).
-
-  * Final probabilities are products of partial probabilities and therefore are small.
-  This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with
-  example-based approach (which produces much higher probabilities). This problem is not mentioned in the paper.
 
 * Example-based approach
 

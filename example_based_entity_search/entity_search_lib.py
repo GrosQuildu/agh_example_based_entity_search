@@ -17,15 +17,21 @@ from rdflib import RDF, Literal, URIRef
 from example_based_entity_search.config import D_PREC, L
 from example_based_entity_search.utils import PPGraph
 
-Triple = Tuple[Union[None, URIRef], URIRef, Union[URIRef, Literal]]
-RetrievalModel = Callable[[Any, PPGraph, URIRef], D]
+Triple = Tuple[Union[None, URIRef], URIRef,
+               Union[URIRef, Literal]]  # RDF triple
+Query = Tuple[str, List[URIRef]]  # (relation, examples)
+PreparsedData = Any
+RetrievalModel = Callable[[PreparsedData, PPGraph, URIRef], D]
+PreparsingFunc = Callable[[PPGraph, Query], PreparsedData]
+# (mean_examples_ranking, [(0.23, "smthing"), ...])
+Ranking = Tuple[bool, List[Tuple[D, URIRef]]]
 
 
-def normalize(text):
+def normalize_relation(text: str) -> str:
     return str(text).lower()
 
 
-def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, DefaultDict[str, int]]:
+def _text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, DefaultDict[str, int]]:
     """Creates text representation of the entity.
 
     Entity is represented with triples that have the entity as a subject. Such triples
@@ -85,7 +91,7 @@ def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, DefaultDict
         else:
             continue
 
-        for o in normalize(value_to_use).split():
+        for o in normalize_relation(value_to_use).split():
             cs_to_use[o] += 1
 
         if all([sum(cs.values()) >= threshold for cs in [attributes, types, links]]):
@@ -103,7 +109,22 @@ def text_representation(graph: PPGraph, entity: URIRef) -> Dict[str, DefaultDict
     return result
 
 
-def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
+def _text_preparsing(graph: PPGraph, input_data: Query) -> Tuple[List[str], int]:
+    """Normalize relation and compute dirichlet model parameters 
+    """
+    # unpack query
+    relation, _ = input_data
+
+    # normalize query
+    relation_normalized = normalize_relation(relation).split()
+
+    # pseudo-counts or equivalent sample size
+    ni = graph.size
+
+    return relation_normalized, ni
+
+
+def _text_retrieval_model(preparsed_data: Tuple[List[str], int], graph: PPGraph, entity: URIRef) -> D:
     """Rates entity represented as text.
 
     Rate is equal to the probability of the entity being relevant to the relation.
@@ -116,7 +137,7 @@ def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
         (4) http://profsite.um.ac.ir/~monsefi/machine-learning/pdf/Machine-Learning-Tom-Mitchell.pdf
 
     Args:
-        relation: plain text query describing entities we are looking for
+        preparsed_data: preparsed relation, precomputed dirichlet parameters
         graph: RDF triples to use (graph represents whole word we know about)
         entity: RDF entity to rank
 
@@ -129,18 +150,15 @@ def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
     assert isinstance(graph, PPGraph), 'graph is not PPGraph'
     assert isinstance(entity, URIRef), ['entity is not URIRef', entity]
 
-    # normalize query
-    relation = normalize(relation).split()
+    # unpack input data
+    relation, ni = preparsed_data
 
     # get text representations of the entity, theta_e
-    representations = text_representation(graph, entity)
+    representations = _text_representation(graph, entity)
 
     # precompute number of terms
     representations_lengths = {cs_name: sum(cs.values()) for
                                cs_name, cs in representations.items()}
-
-    # pseudo-counts or equivalent sample size
-    ni = graph.size
 
     # denominator of "Dirichlet smoothed model of the entire collection of triples"
     # P(t|theta_c) == sum(D in theta_c)tf(t,D) / sum(D in theta_c)|D|
@@ -154,7 +172,7 @@ def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
     #         triple_object_text = node
     #     else:
     #         triple_object_text = graph.label(node)
-    #     probability_collection_denominator += len(normalize(triple_object_text))
+    #     probability_collection_denominator += len(normalize_relation(triple_object_text))
 
     # P(t|theta_c), it should depends on term t
     # but assume it is 1/ni, according to (4), page 182
@@ -189,7 +207,7 @@ def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
             #         triple_object_text = node
             #     else:
             #         triple_object_text = graph.label(node)
-            #     probability_collection_nominator += normalize(triple_object_text).count(t)
+            #     probability_collection_nominator += normalize_relation(triple_object_text).count(t)
             # probability_collection = probability_collection_nominator / probability_collection_denominator
 
             # P(t | theta_cs_e) == [tf(t,e) + ni*P(t|theta_c)] / [|e| + ni]
@@ -213,7 +231,7 @@ def text_retrieval_model(relation: str, graph: PPGraph, entity: URIRef) -> D:
 
 
 @lru_cache(1024)
-def triples_set_representation(graph: PPGraph, entity: URIRef) -> Set[Triple]:
+def _triples_set_representation(graph: PPGraph, entity: URIRef) -> Set[Triple]:
     """Creates set representation of the entity.
 
     Set contains all triples that have the entity as a subject (outlinks)
@@ -251,18 +269,22 @@ def triples_set_representation(graph: PPGraph, entity: URIRef) -> Set[Triple]:
     return result
 
 
-def examples_preparsing(graph, examples):
-    """Convert example entities to Most of the final probability depends only on examples.
+def _examples_preparsing(graph: PPGraph, input_data: Query) -> Dict[Triple, D]:
+    """Convert example entities to frequency (number of occurences).
 
-    So we need to compute it only once
+    Most of the final probability depends only on examples.
+    So we need to compute it only once (not for every entity to rank).
     """
+    # unpack query
+    _, examples = input_data
+
     L.debug('Preparsing data for %d examples', len(examples))
 
     # get set representations
     examples_representations = []
     for example in examples:
         examples_representations.append(
-            triples_set_representation(graph, example))
+            _triples_set_representation(graph, example))
 
     # n(tr, x) = 1 if tr in x else 0
     # denominator of P(tr|theta_X) = denominator = sum(tr in all(x in X)) sum(x in X) n(tr, x)
@@ -290,13 +312,13 @@ def examples_preparsing(graph, examples):
     return preparsed_examples
 
 
-def example_retrieval_model(preparsed_examples: Dict[Triple, D], graph: PPGraph, entity: URIRef):
+def _example_retrieval_model(preparsed_data: Dict[Triple, D], graph: PPGraph, entity: URIRef):
     """Rates entity represented as set of triples.
 
     Rate is based on the similarity of sets.
 
     Args:
-        preparsed_examples: preparsed example entities
+        preparsed_data: preparsed example entities
         graph: RDF triples to use (graph represents whole word we know about)
         entity: RDF entity to rank
 
@@ -310,27 +332,28 @@ def example_retrieval_model(preparsed_examples: Dict[Triple, D], graph: PPGraph,
     assert isinstance(entity, URIRef), ['entity is not URIRef', entity]
 
     # get set representations of the entity, e_l
-    representation = triples_set_representation(graph, entity)
+    representation = _triples_set_representation(graph, entity)
 
     # P(e_l | theta_X) = sum(tr in X) P(e_l|tr) * P(tr|theta_X)
     # P(e_l|tr) = 1 if tr in e_l else 0
-    # P(tr|theta_X) are in preparsed_examples
+    # P(tr|theta_X) are in preparsed_data
     final_probability = D(0)
-    for tr in preparsed_examples.keys():
+    for tr in preparsed_data.keys():
         if tr in representation:
-            final_probability += preparsed_examples[tr]
+            final_probability += preparsed_data[tr]
 
     L.debug('Probability: %s', final_probability)
     return final_probability
 
 
-def rank(retrieval_model: RetrievalModel, input_data: Any, graph: PPGraph, entities_to_rank: List[URIRef]) \
-        -> List[Tuple[D, URIRef]]:
+def rank(input_data: Query, preparsing_function: PreparsingFunc, retrieval_model: RetrievalModel, graph: PPGraph, entities_to_rank: List[URIRef]) \
+        -> Ranking:
     """Rates entities based on provided model and input query.
 
     Args:
-        retrieval_model: function implementing rating function
-        input_data: something to rate, it is passed to retrieval_model function as first argument
+        input_data: query, it is passed to preparsing_function
+        preparsing_function: function that takes input_data and returns stuff for retrieval_model
+        retrieval_model: function implementing rating
         graph: RDF triples to use
         entities_to_rank: list of entities that should be rated
 
@@ -338,18 +361,103 @@ def rank(retrieval_model: RetrievalModel, input_data: Any, graph: PPGraph, entit
         Ordered/sorted list containing tuples: (rate, entity),
         best matching entities comes first
     """
+    _, examples = input_data
     entities_to_rank_amount = len(entities_to_rank)
     entities_to_rank_progress = max(1, entities_to_rank_amount//10)
     L.info('Ranking %d entities', entities_to_rank_amount)
 
+    # preparse before the loop for efficiency
+    preparsed_data = preparsing_function(graph, input_data)
+    ranking_score: D
+
+    # rank examples themselves, for future combined approach
+    mean_examples_ranking = D(0)
+    for i, entity in enumerate(examples):
+        mean_examples_ranking += retrieval_model(preparsed_data, graph, entity)
+    mean_examples_ranking /= len(examples)
+
+    # do the ranking
     ranking: List[Tuple[D, URIRef]] = []
     for i, entity in enumerate(entities_to_rank):
         if i % entities_to_rank_progress == 0:
             L.info(' ~> ranking entity no %d / %d', i, entities_to_rank_amount)
-        ranking_score = retrieval_model(input_data, graph, entity)
+
+        # score entity
+        ranking_score = retrieval_model(preparsed_data, graph, entity)
+
+        # insert and sort
         bisect.insort_right(ranking, (ranking_score, entity))
         L.debug('-'*20)
 
-    # best scored first
-    ranking = ranking[::-1]
-    return ranking
+    # min/max normalization + best scored first
+    max_val = ranking[-1][0]
+    min_val = ranking[0][0]
+
+    if mean_examples_ranking - ranking[-1][0] < 0:
+        # examples have worse mean score than the best ranked entity
+        # this probably means that the model is useless
+        model_is_ok = False
+    else:
+        model_is_ok = True
+
+    norm_denominator = max_val - min_val
+    L.info(" ~> normalization min = %s, max = %s", min_val, max_val)
+    L.info(" ~> mean_examples_ranking = %s, best entity ranking = %s",
+           mean_examples_ranking, ranking[-1][0])
+    L.info(" ~> model is fine = %s", model_is_ok)
+    return model_is_ok, [((v - min_val) / norm_denominator, entity) for v, entity in ranking[::-1]]
+
+
+def rank_text_based(graph: PPGraph, input_data: Query, entities_to_rank: List[URIRef]) -> Ranking:
+    """Rates entities based on text-based model and input query.
+
+    Args:
+        graph: RDF triples to use
+        input_data: relation (topic) and examples
+        entities_to_rank: list of entities that should be rated
+
+    Returns:
+        Ordered/sorted list containing tuples: (rate, entity),
+        best matching entities comes first
+    """
+    return rank(input_data, _text_preparsing, _text_retrieval_model, graph, entities_to_rank)
+
+
+def rank_examples_based(graph: PPGraph, input_data: Query, entities_to_rank: List[URIRef]) -> Ranking:
+    """Rates entities based on example-based (structure) model  and input query.
+
+    Args:
+        graph: RDF triples to use
+        input_data: relation (topic) and examples
+        entities_to_rank: list of entities that should be rated
+
+    Returns:
+        Ordered/sorted list containing tuples: (rate, entity),
+        best matching entities comes first
+    """
+    return rank(input_data, _examples_preparsing, _example_retrieval_model, graph, entities_to_rank)
+
+
+def rank_combined(rankings: Tuple[Ranking, Ranking]) -> Ranking:
+    lambda_param = D('0.9')
+    combined_ranking: DefaultDict[URIRef, D] = defaultdict(D)
+    ranking_text, ranking_example = rankings
+
+    model_is_ok_example, ranking_example_data = ranking_example
+    model_is_ok_text, ranking_text_data = ranking_text
+
+    if (model_is_ok_example and model_is_ok_text) or \
+            (not model_is_ok_example and not model_is_ok_text):
+        for v, entity in ranking_example_data:
+            combined_ranking[entity] += v * lambda_param
+
+        for v, entity in ranking_text_data:
+            combined_ranking[entity] += v * (1 - lambda_param)
+
+        return True, [(v, k) for k, v in sorted(combined_ranking.items(), key=lambda item: item[1], reverse=True)]
+
+    elif model_is_ok_example:
+        return False, ranking_example_data
+
+    else:
+        return False, ranking_text_data

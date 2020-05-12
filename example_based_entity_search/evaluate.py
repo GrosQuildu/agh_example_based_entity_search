@@ -16,8 +16,9 @@ from typing import DefaultDict, Dict, List, Set
 from rdflib import URIRef
 
 from example_based_entity_search.config import D_PREC, L
-from example_based_entity_search.entity_search_lib import (
-    example_retrieval_model, examples_preparsing, rank, text_retrieval_model)
+from example_based_entity_search.entity_search_lib import (rank_combined,
+                                                           rank_examples_based,
+                                                           rank_text_based)
 from example_based_entity_search.utils import (PPGraph, data_from_sample_file,
                                                load_data, statistical_stats)
 
@@ -46,8 +47,8 @@ def evaluation(graph: PPGraph, evaluation_data: str):
 
     entities_to_rank: List[URIRef] = list(entities_to_rank_unique)
     mean_stats: Dict[str, DefaultDict[str, D]] = {
-        'text': defaultdict(D), 'examples': defaultdict(D)}
-    mean_stats_denominator = {'text': 0, 'examples': 0}
+        'text': defaultdict(D), 'examples': defaultdict(D), 'combined': defaultdict(D)}
+    mean_stats_denominator = {'text': 0, 'examples': 0, 'combined': 0}
 
     # do ranking for every sample file
     for sample_file in samples:
@@ -60,35 +61,34 @@ def evaluation(graph: PPGraph, evaluation_data: str):
             if example in entities_to_rank_wo_examples:
                 entities_to_rank_wo_examples.remove(example)
 
-        # preparse examples for efficiency
-        preparsed_examples = examples_preparsing(graph, examples)
+        ranking_text = rank_text_based(
+            graph, (topic, examples), entities_to_rank_wo_examples)
+        ranking_example = rank_examples_based(
+            graph, (topic, examples), entities_to_rank_wo_examples)
+        ranking_combined = rank_combined((ranking_text, ranking_example))
+        rankings = {'text': ranking_text[1],
+                    'examples': ranking_example[1], 'combined': ranking_combined[1]}
 
         # make the ranking
         for ranking_type in mean_stats.keys():
             print(f'  Ranking with `{ranking_type}-based` method')
-            if ranking_type == 'text':
-                ranking = rank(text_retrieval_model,
-                               topic, graph, entities_to_rank_wo_examples)
-            else:
-                ranking = rank(example_retrieval_model,
-                               preparsed_examples, graph, entities_to_rank_wo_examples)
 
             # how many top entities we would return in ideal case
             # paper sets this to 100
             evaluation_limit = len(relevant)
-            relevant_retrived = 0
-            for i, (ranking_score, entity) in enumerate(ranking):
+            retrived: List[bool] = []
+            for i, (ranking_score, entity) in enumerate(rankings[ranking_type]):
                 if i < evaluation_limit:
                     if entity in relevant:
-                        relevant_retrived += 1
+                        retrived.append(True)
                         print(f'OO {entity} - {ranking_score}')
                     else:
-                        pass
+                        retrived.append(False)
                         print(f'xx {entity} - {ranking_score}')
                 else:
                     break
 
-            stats = statistical_stats(relevant_retrived, evaluation_limit)
+            stats = statistical_stats(retrived)
             for k, v in stats.items():
                 print(f'    {k} -> {v.quantize(D_PREC)}')
                 mean_stats[ranking_type][k] += v
@@ -99,7 +99,7 @@ def evaluation(graph: PPGraph, evaluation_data: str):
         print(f'  Ranking with `{ranking_type}-based` method')
         for k, v in mean_stats[ranking_type].items():
             print(
-                f'    {k} -> {(v / mean_stats_denominator[ranking_type]).quantize(D_PREC)}')
+                f'    Mean-{k} -> {(v / mean_stats_denominator[ranking_type]).quantize(D_PREC)}')
 
 
 if __name__ == '__main__':
