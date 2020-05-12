@@ -50,32 +50,30 @@ Ranking - text-based:
  xx http://dbpedia.org/resource/Odoacer - 0.8941172649739520290907284717
  OO http://dbpedia.org/resource/David_Scott - 0.8712018197108706074555150168
  OO http://dbpedia.org/resource/James_Irwin - 0.8127005405171212168537938517
-...
 ~~~~~~~~~~
  R-Precision -> 0.57143
  AvgPrec -> 0.38163
 ------------------------------
 Ranking - example-based:
  OO http://dbpedia.org/resource/Alan_Shepard - 1
- OO http://dbpedia.org/resource/Edgar_Mitchell - 0.4473684210526315789473684217
+ OO http://dbpedia.org/resource/Edgar_Mitchell - 0.4473684210526315789473684219
  OO http://dbpedia.org/resource/James_Irwin - 0.4210526315789473684210526322
  OO http://dbpedia.org/resource/Charles_Duke - 0.4210526315789473684210526322
  OO http://dbpedia.org/resource/David_Scott - 0.3421052631578947368421052637
-...
 ~~~~~~~~~~
  R-Precision -> 0.71429
  AvgPrec -> 0.71429
 ------------------------------
 Ranking - combined:
  OO http://dbpedia.org/resource/Alan_Shepard - 1.0
- OO http://dbpedia.org/resource/Edgar_Mitchell - 0.4636328183698531518161590468
- OO http://dbpedia.org/resource/James_Irwin - 0.4602174224727647532643267542
- OO http://dbpedia.org/resource/Charles_Duke - 0.4167145410859756810084905718
- OO http://dbpedia.org/resource/David_Scott - 0.3950149188131923239034462390
-...
+ OO http://dbpedia.org/resource/James_Irwin - 0.6168765860480342926374232419
+ OO http://dbpedia.org/resource/David_Scott - 0.6066535414343826721488101402
+ OO http://dbpedia.org/resource/Edgar_Mitchell - 0.5286904076387394432913215475
+ xx http://dbpedia.org/resource/Louis_XVI_of_France - 0.5012853131141009875534917098
 ~~~~~~~~~~
  R-Precision -> 0.71429
- AvgPrec -> 0.71429
+ AvgPrec -> 0.67347
+
 ```
 
 ## Running the tool
@@ -115,42 +113,50 @@ Entities to rank, as URIs. Enter (blank line) to finish:
 Ranking 10 entities
  ~> ranking entity no 0 / 10
 ...
-------------------------------
 Ranking - text-based:
- http://dbpedia.org/resource/Darth_Vader - 1
- http://dbpedia.org/resource/Revan - 0.9941088851845064208453746594
- http://dbpedia.org/resource/Darth_Maul - 0.9271692750255459152127209907
- http://dbpedia.org/resource/Mace_Windu - 0.5053067699988764603154636999
- http://dbpedia.org/resource/James_Bond - 0.1769364793649063167785469810
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.1574433650187221333035511766
- http://dbpedia.org/resource/Qui-Gon_Jinn - 0.1166633054001528293587669988
- http://dbpedia.org/resource/Yoda - 0.05259709003653568294731773713
- http://dbpedia.org/resource/Sauron - 0.002722182115243205931012787568
- http://dbpedia.org/resource/G._K._Chesterton - 0.0
+ OO http://dbpedia.org/resource/Darth_Vader - 1
+ OO http://dbpedia.org/resource/Revan - 0.9941088851845064208453746594
+ OO http://dbpedia.org/resource/Darth_Maul - 0.9271692750255459152127209907
+ xx http://dbpedia.org/resource/Mace_Windu - 0.5053067699988764603154636999
+ xx http://dbpedia.org/resource/James_Bond - 0.1769364793649063167785469810
+ xx http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.1574433650187221333035511766
+ xx http://dbpedia.org/resource/Qui-Gon_Jinn - 0.1166633054001528293587669988
+ xx http://dbpedia.org/resource/Yoda - 0.05259709003653568294731773713
+ xx http://dbpedia.org/resource/Sauron - 0.002722182115243205931012787568
+ xx http://dbpedia.org/resource/G._K._Chesterton - 0.0
+~~~~~~~~~~
+ R-Precision -> 1.00000
+ AvgPrec -> 1.00000
 ------------------------------
 Ranking - example-based:
- http://dbpedia.org/resource/Yoda - 1
- http://dbpedia.org/resource/Qui-Gon_Jinn - 1
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 1
- http://dbpedia.org/resource/Mace_Windu - 1
- http://dbpedia.org/resource/Darth_Vader - 1
- http://dbpedia.org/resource/Darth_Maul - 0.6
- http://dbpedia.org/resource/Sauron - 0.2
- http://dbpedia.org/resource/Revan - 0.2
- http://dbpedia.org/resource/G._K._Chesterton - 0.2
- http://dbpedia.org/resource/James_Bond - 0E+30
+ xx http://dbpedia.org/resource/Yoda - 1
+ xx http://dbpedia.org/resource/Qui-Gon_Jinn - 0.9999999999999999999999999997
+ xx http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.9999999999999999999999999997
+ xx http://dbpedia.org/resource/Mace_Windu - 0.9999999999999999999999999997
+ OO http://dbpedia.org/resource/Darth_Vader - 0.9999999999999999999999999997
+ OO http://dbpedia.org/resource/Darth_Maul - 0.5714285714285714285714285713
+ OO http://dbpedia.org/resource/Revan - 0.4285714285714285714285714286
+ xx http://dbpedia.org/resource/Sauron - 0.1428571428571428571428571429
+ xx http://dbpedia.org/resource/G._K._Chesterton - 0.1428571428571428571428571429
+ xx http://dbpedia.org/resource/James_Bond - 0E+30
+~~~~~~~~~~
+ R-Precision -> 0.00000
+ AvgPrec -> 0.00000
 ------------------------------
 Ranking - combined:
- http://dbpedia.org/resource/Yoda - 1
- http://dbpedia.org/resource/Qui-Gon_Jinn - 1
- http://dbpedia.org/resource/Obi-Wan_Kenobi - 1
- http://dbpedia.org/resource/Mace_Windu - 1
- http://dbpedia.org/resource/Darth_Vader - 1
- http://dbpedia.org/resource/Darth_Maul - 0.6
- http://dbpedia.org/resource/Sauron - 0.2
- http://dbpedia.org/resource/Revan - 0.2
- http://dbpedia.org/resource/G._K._Chesterton - 0.2
- http://dbpedia.org/resource/James_Bond - 0E+30
+ OO http://dbpedia.org/resource/Darth_Vader - 0.9999999999999999999999999998
+ xx http://dbpedia.org/resource/Mace_Windu - 0.7526533849994382301577318498
+ OO http://dbpedia.org/resource/Darth_Maul - 0.7492989232270586718920747810
+ OO http://dbpedia.org/resource/Revan - 0.7113401568779674961369730440
+ xx http://dbpedia.org/resource/Obi-Wan_Kenobi - 0.5787216825093610666517755881
+ xx http://dbpedia.org/resource/Qui-Gon_Jinn - 0.5583316527000764146793834992
+ xx http://dbpedia.org/resource/Yoda - 0.5262985450182678414736588686
+ xx http://dbpedia.org/resource/James_Bond - 0.08846823968245315838927349050
+ xx http://dbpedia.org/resource/Sauron - 0.07278966248619303153693496523
+ xx http://dbpedia.org/resource/G._K._Chesterton - 0.07142857142857142857142857145
+~~~~~~~~~~
+ R-Precision -> 0.66667
+ AvgPrec -> 0.55556
 ```
 
 It is pretty slow, because we need to do a lot of HTTP requests.
@@ -168,48 +174,8 @@ Now, instead of writing query from nothing, execute ready query from a sample fi
 Sample file to use: data/sample5.yml
 Preparing ranking for sample file `data/sample5.yml`
 Ranking 16 entities
- ~> ranking entity no 0 / 20
+ ~> ranking entity no 0 / 16
 ...
-------------------------------
-Ranking - text-based:
- OO http://dbpedia.org/resource/Boromir - 2.934713853186765002546771801E-23
- OO http://dbpedia.org/resource/Gandalf - 1.946241300960820230942345083E-23
- xx http://dbpedia.org/resource/Isildur - 1.878114332953757029860946284E-23
- OO http://dbpedia.org/resource/Gimli_(Middle-earth) - 6.883299615074009296265631534E-24
- xx http://dbpedia.org/resource/Saruman - 5.160899299947102073001672565E-24
- xx http://dbpedia.org/resource/King_Arthur - 4.060628871327632192167229192E-24
- xx http://dbpedia.org/resource/Sauron - 2.623427028120836409202092707E-24
- OO http://dbpedia.org/resource/Frodo_Baggins - 2.374169944796889318564718472E-24
- xx http://dbpedia.org/resource/Bilbo_Baggins - 2.214659323027436965422680638E-24
- OO http://dbpedia.org/resource/Legolas - 7.120837002688267337083381729E-25
- xx http://dbpedia.org/resource/Jason - 6.370315541440045388034964235E-25
- xx http://dbpedia.org/resource/Elrond - 6.082849141765376294898133877E-25
- xx http://dbpedia.org/resource/Manwë - 4.156643217958239018720883389E-25
- xx http://dbpedia.org/resource/Leir_of_Britain - 2.093834120300476037805863193E-25
- xx http://dbpedia.org/resource/Balin_(Middle-earth) - 1.321636116498028375912430476E-25
- xx http://dbpedia.org/resource/Peter_Pan - 7.969644887246789495404047439E-26
-~~~~~~~~~~
- precision -> 0.60000
-------------------------------
-Ranking - example-based:
- OO http://dbpedia.org/resource/Frodo_Baggins - 0.01218521527213647441104792851
- xx http://dbpedia.org/resource/Saruman - 0.008935824532900081234768480911
- OO http://dbpedia.org/resource/Gandalf - 0.008935824532900081234768480911
- OO http://dbpedia.org/resource/Boromir - 0.008935824532900081234768480911
- OO http://dbpedia.org/resource/Gimli_(Middle-earth) - 0.007311129163281884646628757109
- xx http://dbpedia.org/resource/Sauron - 0.006498781478472786352558895208
- OO http://dbpedia.org/resource/Legolas - 0.006498781478472786352558895208
- xx http://dbpedia.org/resource/Bilbo_Baggins - 0.006498781478472786352558895208
- xx http://dbpedia.org/resource/Elrond - 0.004061738424045491470349309505
- xx http://dbpedia.org/resource/Isildur - 0.003249390739236393176279447604
- xx http://dbpedia.org/resource/Peter_Pan - 0.002437043054427294882209585703
- xx http://dbpedia.org/resource/Leir_of_Britain - 0.002437043054427294882209585703
- xx http://dbpedia.org/resource/King_Arthur - 0.002437043054427294882209585703
- xx http://dbpedia.org/resource/Jason - 0.002437043054427294882209585703
- xx http://dbpedia.org/resource/Balin_(Middle-earth) - 0.002437043054427294882209585703
- xx http://dbpedia.org/resource/Manwë - 0
-~~~~~~~~~~
- precision -> 0.80000
 ```
 
 If you don't have RDF file but want one, appropriate to a sample file, then use `ebes-data` (`dump_data.py`) script:
@@ -228,9 +194,14 @@ Loading graphs...
 ...
 Mean stats:
   Ranking with `text-based` method
-    precision -> 0.25397
+    Mean-R-Precision -> 0.25397
+    Mean-AvgPrec -> 0.19444
   Ranking with `examples-based` method
-    precision -> 0.62937
+    Mean-R-Precision -> 0.62937
+    Mean-AvgPrec -> 0.59862
+  Ranking with `combined-based` method
+    Mean-R-Precision -> 0.60556
+    Mean-AvgPrec -> 0.57468
 ```
 
 ## Data

@@ -126,7 +126,10 @@ def shell(graph: PPGraph):
 
     def do_sample(graph):
         sample_file = input('Sample file to use: ')
-        do_all_rankings(graph, *data_from_sample_file(sample_file))
+        try:
+            do_all_rankings(graph, *data_from_sample_file(sample_file))
+        except Exception:
+            L.error('Error when ranking')
 
     print_help()
     while True:
@@ -178,7 +181,11 @@ def main():
 
     # execute query from sample file
     if args.sample_file:
-        do_all_rankings(graph, *data_from_sample_file(args.sample_file))
+        try:
+            do_all_rankings(graph, *data_from_sample_file(args.sample_file))
+        except Exception:
+            L.error("Error when raking")
+            return 1
 
     # execute queries from shell
     if args.shell:

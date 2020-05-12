@@ -40,8 +40,13 @@ def evaluation(graph: PPGraph, evaluation_data: str):
     # collect all entities
     entities_to_rank_unique: Set[URIRef] = set()
     for sample_file in samples:
-        _, examples, entities_to_rank_part, _ = data_from_sample_file(
-            sample_file)
+        try:
+            _, examples, entities_to_rank_part, _ = data_from_sample_file(
+                sample_file)
+        except SyntaxError:
+            L.error('Error when loading data')
+            return
+
         entities_to_rank_unique.update(examples)
         entities_to_rank_unique.update(entities_to_rank_part)
 
@@ -53,8 +58,12 @@ def evaluation(graph: PPGraph, evaluation_data: str):
     # do ranking for every sample file
     for sample_file in samples:
         print(f'Stats for `{sample_file}`:')
-        topic, examples, _, relevant = data_from_sample_file(
-            sample_file)
+        try:
+            topic, examples, _, relevant = data_from_sample_file(
+                sample_file)
+        except Exception as e:
+            L.error('Error when loading data: %s', e)
+            return
 
         entities_to_rank_wo_examples = entities_to_rank[:]
         for example in examples:
