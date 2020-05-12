@@ -15,7 +15,7 @@ from typing import Any, Callable, DefaultDict, Dict, List, Set, Tuple, Union
 from rdflib import RDF, Literal, URIRef
 
 from example_based_entity_search.config import D_PREC, L
-from example_based_entity_search.utils import PPGraph
+from example_based_entity_search.utils import PPGraph, statistical_stats
 
 Triple = Tuple[Union[None, URIRef], URIRef,
                Union[URIRef, Literal]]  # RDF triple
@@ -24,7 +24,7 @@ PreparsedData = Any
 RetrievalModel = Callable[[PreparsedData, PPGraph, URIRef], D]
 PreparsingFunc = Callable[[PPGraph, Query], PreparsedData]
 # (mean_examples_ranking, [(0.23, "smthing"), ...])
-Ranking = Tuple[bool, List[Tuple[D, URIRef]]]
+Ranking = Tuple[D, List[Tuple[D, URIRef]]]
 
 
 def normalize_relation(text: str) -> str:
@@ -370,12 +370,6 @@ def rank(input_data: Query, preparsing_function: PreparsingFunc, retrieval_model
     preparsed_data = preparsing_function(graph, input_data)
     ranking_score: D
 
-    # rank examples themselves, for future combined approach
-    mean_examples_ranking = D(0)
-    for i, entity in enumerate(examples):
-        mean_examples_ranking += retrieval_model(preparsed_data, graph, entity)
-    mean_examples_ranking /= len(examples)
-
     # do the ranking
     ranking: List[Tuple[D, URIRef]] = []
     for i, entity in enumerate(entities_to_rank):
@@ -392,20 +386,33 @@ def rank(input_data: Query, preparsing_function: PreparsingFunc, retrieval_model
     # min/max normalization + best scored first
     max_val = ranking[-1][0]
     min_val = ranking[0][0]
-
-    if mean_examples_ranking - ranking[-1][0] < 0:
-        # examples have worse mean score than the best ranked entity
-        # this probably means that the model is useless
-        model_is_ok = False
-    else:
-        model_is_ok = True
-
     norm_denominator = max_val - min_val
+
+    # rank examples themselves, for future use in combined approach
+    ranking_with_examples = ranking[:]
+    for i, entity in enumerate(examples):
+        example_ranking = retrieval_model(preparsed_data, graph, entity)
+        bisect.insort_right(ranking_with_examples, (example_ranking, entity))
+    ranking_with_examples = ranking_with_examples[::-1]
+
+    retrived_with_examples: List[bool] = []
+    count_found_examples = 0
+    for _, entity in ranking_with_examples:
+        if count_found_examples == len(examples):
+            break
+
+        if entity in examples:
+            count_found_examples += 1
+            retrived_with_examples.append(True)
+        else:
+            retrived_with_examples.append(False)
+
+    # average precision
+    ap = statistical_stats(retrived_with_examples)['AvgPrec']
+
     L.info(" ~> normalization min = %s, max = %s", min_val, max_val)
-    L.info(" ~> mean_examples_ranking = %s, best entity ranking = %s",
-           mean_examples_ranking, ranking[-1][0])
-    L.info(" ~> model is fine = %s", model_is_ok)
-    return model_is_ok, [((v - min_val) / norm_denominator, entity) for v, entity in ranking[::-1]]
+    L.info(" ~> AP = %s", ap)
+    return ap, [((v - min_val) / norm_denominator, entity) for v, entity in ranking[::-1]]
 
 
 def rank_text_based(graph: PPGraph, input_data: Query, entities_to_rank: List[URIRef]) -> Ranking:
@@ -439,25 +446,29 @@ def rank_examples_based(graph: PPGraph, input_data: Query, entities_to_rank: Lis
 
 
 def rank_combined(rankings: Tuple[Ranking, Ranking]) -> Ranking:
-    lambda_param = D('0.9')
+    lambda_param = D('0.5')
+    delta_param = D('0.1')
+
     combined_ranking: DefaultDict[URIRef, D] = defaultdict(D)
+
     ranking_text, ranking_example = rankings
+    ap_example, ranking_example_data = ranking_example
+    ap_text, ranking_text_data = ranking_text
+    overlap = min(ap_example, ap_text) / max(ap_example, ap_text)
 
-    model_is_ok_example, ranking_example_data = ranking_example
-    model_is_ok_text, ranking_text_data = ranking_text
+    L.info("Overlap = %s", overlap)
 
-    if (model_is_ok_example and model_is_ok_text) or \
-            (not model_is_ok_example and not model_is_ok_text):
+    if overlap < delta_param and ap_example > ap_text:
+        return ap_example, ranking_example_data
+
+    elif overlap < delta_param and ap_example < ap_text:
+        return ap_text, ranking_text_data
+
+    else:
         for v, entity in ranking_example_data:
             combined_ranking[entity] += v * lambda_param
 
         for v, entity in ranking_text_data:
             combined_ranking[entity] += v * (1 - lambda_param)
 
-        return True, [(v, k) for k, v in sorted(combined_ranking.items(), key=lambda item: item[1], reverse=True)]
-
-    elif model_is_ok_example:
-        return False, ranking_example_data
-
-    else:
-        return False, ranking_text_data
+        return D(1), [(v, k) for k, v in sorted(combined_ranking.items(), key=lambda item: item[1], reverse=True)]
