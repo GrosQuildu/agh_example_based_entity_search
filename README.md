@@ -290,7 +290,7 @@ contains necessary information. Possibly use `dump_data.py` (`ebes-data`) script
     * Text-based probabilities are products of partial probabilities and therefore are small.
     This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with example-based approach, which produces much higher probabilities. This problem is not mentioned in the paper. I have applied min-max normalization.
     
-    * Parameters in combined approach are tailored to test data in the paper. Reason: comparison of tex and structured approaches under "ideal" conditions. Dunno how to set the params in real word queries. Also computing average precision using examples is not well described, f.e. how assumed amount of relevant entities was set.  
+    * Parameters in combined approach are tailored to test data in the paper. Reason: comparison of text and structured approaches under "ideal" conditions. Dunno how to set the params in real word queries. Also computing average precision using examples is not well described, f.e. how assumed amount of relevant entities was set.  
 
 * Text-based approach
 
