@@ -200,8 +200,8 @@ Mean stats:
     Mean-R-Precision -> 0.62937
     Mean-AvgPrec -> 0.59862
   Ranking with `combined-based` method
-    Mean-R-Precision -> 0.60556
-    Mean-AvgPrec -> 0.57468
+    Mean-R-Precision -> 0.71667
+    Mean-AvgPrec -> 0.66728
 ```
 
 ## Data
@@ -290,7 +290,7 @@ contains necessary information. Possibly use `dump_data.py` (`ebes-data`) script
     * Text-based probabilities are products of partial probabilities and therefore are small.
     This may lead to precision errors (somehow solved with python's `Decimal` module) and is not compatible with example-based approach, which produces much higher probabilities. This problem is not mentioned in the paper. I have applied min-max normalization.
     
-    * It is not described how examples were used to compute average precision (AP) for a ranked list. I check mean score of examples achived in a model and if it is lower than score of the best scored entity I consider model not suitable for the query.  
+    * Parameters in combined approach are tailored to test data in the paper. Reason: comparison of tex and structured approaches under "ideal" conditions. Dunno how to set the params in real word queries. Also computing average precision using examples is not well described, f.e. how assumed amount of relevant entities was set.  
 
 * Text-based approach
 

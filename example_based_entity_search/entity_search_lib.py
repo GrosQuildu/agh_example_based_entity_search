@@ -398,7 +398,8 @@ def rank(input_data: Query, preparsing_function: PreparsingFunc, retrieval_model
     retrived_with_examples: List[bool] = []
     count_found_examples = 0
     for _, entity in ranking_with_examples:
-        if count_found_examples == len(examples):
+        # assumed amount of relevant entities
+        if count_found_examples == 10:
             break
 
         if entity in examples:
